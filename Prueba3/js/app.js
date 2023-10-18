@@ -19,9 +19,9 @@ AFRAME.registerComponent("actua",{
         document.querySelector("[text]").setAttribute('value', `${++score} cubos`);
       }else if(valor==="resta"){
         if (score === 0){
-          document.querySelector("[text]").setAttribute('value', `${++ score} cubos`);
+          document.querySelector("[text]").setAttribute('value', `${score} cubos`);
         } else{
-          document.querySelector("[text]").setAttribute('value', `${++ score} cubos`);
+          document.querySelector("[text]").setAttribute('value', `${--score} cubos`);
         }
       }else if(valor === "acepta"){
         let cubos = document.createElement('a-entity')
