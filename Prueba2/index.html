@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="js/app.js"></script>
+  </head>
+  <body>
+
+
+    <a-scene>
+      <a_assets>
+        <img src="texturas/fibra.jpg" id="fibra">
+    </a_assets>
+    <a-sky src ="#fibra"></a-sky>
+      <a-entity cubos="numero: 10 "></a-entity>
+      <a-entity camera look-controls>
+        <a-entity
+        animation__click="property: scale; startEvents: click; easing: easeInCubic; dur: 150; from: 0.1 0.1 0.1; to: 1 1 1"
+        animation__fusing="property: scale; startEvents: fusing; easing: easeInCubic; dur: 1500; from: 1 1 1; to: 0.1 0.1 0.1"
+        animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeInCubic; dur: 500; to: 1 1 1"
+        cursor="fuse: true;"
+        material="color: black; shader: flat"
+        position="0 0 -3"
+        geometry="primitive: ring"></a-entity> 
+      </a-entity> 
+    
+  </body>
+</html>
