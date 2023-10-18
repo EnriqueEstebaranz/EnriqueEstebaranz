@@ -23,7 +23,7 @@ function initScene(){
             //inyecto creando un elemento
             nano = document.createElement('a-entity')
             nano.setAttribute('geometry', {primitive: "box", width: Math.random()* 5 + 1.5, height: Math.random()* 5 + 1.5})//declaro componente de geometría 
-            //nano.setAttribute('material', {shader:"flat", src:"#nano"})//declaro componente de material
+            nano.setAttribute('material', {shader:"flat", src:"#am"})//declaro componente de material
             //nano.setAttribute('material', {color:"red"});
             //const nuevoColor = new THREE.Color(0, 0, 0);
             //nano.object3D.material.color=nuevoColor;
@@ -41,8 +41,9 @@ function initScene(){
 AFRAME.registerComponent('shootable',{
     init: function(){
         this.el.addEventListener('click',() =>{
-            this.el.parentNode.removeChild(this.el)//hacemos para que desdaparezca el nano
-            document.querySelector("[text]").setAttribute('value', `${++ score} Nanos cazados`)
+            //this.el.parentNode.removeChild(this.el)//hacemos para que desdaparezca el nano
+            this.el.setAttribute('material', {shader:"flat", src:"#ferrari"});
+            document.querySelector("[text]").setAttribute('value', `${++ score} ferrari convertido`)
         })
     }
 })
