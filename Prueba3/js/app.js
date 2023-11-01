@@ -58,7 +58,7 @@ AFRAME.registerComponent('cubos', {
 
         //IMPORTANTE
         //En IFRAME las posiciones no se deben dar con setAtribute, se debe tirar del object3d de three.js
-        entidad.object3D.position.set((Math.random()* 60) -30, (Math.random()* 60) -30, (Math.random()* 60) -30)
+        entidad.object3D.position.set((Math.random()* 30)-15 , (Math.random()* 30)-15 , (Math.random()* 30)-40 )
         entidad.setAttribute("cambiador","")
         this.el.appendChild(entidad);
       }
