@@ -1,7 +1,7 @@
 let defecto = 10000
 let estadoPaquete = false
 //let contador = 0 // lleva la cuenta de los paquetes activados, lo creo aqui para que sea  una variable global
-
+//https://enriqueestebaranz.github.io/EnriqueEstebaranz/Monitoreo/Prueba2/
 AFRAME.registerComponent("reloj", {
     schema:{
         tiempo:{type: "int", default:defecto}
