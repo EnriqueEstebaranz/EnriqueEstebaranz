@@ -37,13 +37,11 @@
         <a-entity  position="0 -3 0 "  rotation = "0 0 -45" class = "orbita" animation = "property : rotation; dur:20000; to:0 -360 0; easing: linear; loop:true"></a-entity>
         <a-entity  position="0 0 0 "  rotation = "0 0 90" class = "orbita" animation = "property : rotation; dur:30000; to:0 360 360; easing: linear; loop:true"></a-entity>
         <a-entity  position="0 0 0 "  rotation = "0 0 120" class = "orbita" animation = "property : rotation; dur:40000; to:360 0 -360; easing: linear; loop:true"></a-entity>
-
         <a-entity camera look-controls>
             <a-text value="0 Nanos cazados" color="white" position = "0 -0.1 -1" width="1" align="center"></a-text> <!--width da el tamaño del texto, "sustituye al font size"-->
             <a-entity cursor="fuse: true; fuseTimeout:100" position="0 0 -1" geometry = "primitive: box;" material = "shader:flat; src:#f1" scale="0.1 0.1 0.1" raycaster="objects: .nano"></a-entity><!--Cada vez que este 
             sobre un elemento o mirando un elemento durante 100ms se dispara un click, de esta forma creo la interación por mirada, mas adelante se recogera de forma programática-->
-        </a-entity> <!--Camera indica que debe estar fijo en la pantalla y look controls permite la iteracción por mirada-->
-            
+        </a-entity> <!--Camera indica que debe estar fijo en la pantalla y look controls permite la iteracción por mirada-->       
     </a-scene>
 </body>
 </html>
