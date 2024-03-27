@@ -5,8 +5,6 @@ import json
 input_filename = "netgui.nkp"
 
 # "r" leo el archivo .nkp
-
-
 with open(input_filename, "r") as file:
     netgui_nkp = file.read()
 
@@ -30,7 +28,7 @@ for line in lineas:
     # Si la línea contiene información de posición y tipo de nodo
     if 'position' in parts[0]:
         position_parts = parts[0].split('(')[1].split(')')[0].split(',')
-        x, y = (float(position_parts[0])/20)-25, (float(position_parts[1])/20)-25
+        x, y = float(position_parts[0]), float(position_parts[1])
         node_type = parts[1].strip().split('(')[0]
         node_name = parts[1].strip().split('"')[1]
         
@@ -48,17 +46,16 @@ for line in lineas:
     # Actualizar la línea anterior con la línea actual
     linea_anterior = line
 
-# Contiene el diccionario de datos, si quiero dos archivos puedo separarlo y crear uno para cada valor.
+# Crear el diccionario de datos final
 data = {"nodes": nodes, "connections": connections}
 
-# Cambio el nombre del archivo, reemplazando .nkp por .json
+# Cambiar la extensión del archivo de entrada a ".json"
 output_filename = input_filename.replace(".nkp", ".json")
 
-# "w" -> write, para escribir el archivo .json
+# "w" escribir el archivo .json
 with open(output_filename, "w") as json_file:
-    # Convertir a formato JSON y escribir en el archivo con 2 espacios (indent)
+    # Convertir a formato JSON y escribir en el archivo
     json.dump(data, json_file, indent=2)
 
-print(f"El archivo JSON se ha creado correctamente:  {output_filename}" )
-
+print(f"El archivo JSON se ha creado correctamente: {output_filename}")
 

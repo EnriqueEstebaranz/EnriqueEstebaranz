@@ -27,15 +27,16 @@
         <a-entity nodes="numero: 5 "></a-entity>
         <a-entity pausar-animacion material = "shader:flat; src:#pausa" position="-2 0 -5 " geometry = "primitive: box; width: 0.5; height: 0.5" ></a-entity>
         <a-entity reproducir-animacion material = "shader:flat; src:#reproducir" position="2 0 -5 " geometry = "primitive: box; width: 0.5; height: 0.5" ></a-entity>
+        
         <!-- Sonidos -->
-
         <a-sound id = "logrado"src="#miMusica" autoplay="false"></a-sound>
         <a-sound id = "tiktak"src="#miMusica2" autoplay="false" loop="true"></a-sound>
+
+
         <a-entity movement-controls="fly: true" position="0 5 20"></a-entity>
-        <a-entity camera position="0 0 0" look-controls></a-entity>
+        <a-entity camera position="0 0 0" look-controls wasd-controls></a-entity>
         <a-entity cursor="rayOrigin:mouse"></a-entity>
-        <a-entity laser-controls="hand: right"></a-entity>
-      
+
     </a-scene>
 </body>
 </html>

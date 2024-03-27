@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script>
+      // Leer el documento .nkp
+      fetch('netgui.txt')
+        .then(response => response.text())
+        .then(data => {
+          // Procesar el contenido del archivo .nkp
+          const nodesRegex = /position\(([^)]+)\);\s*(\w+)\("([^"]+)"\)/g;
+          const connectionsRegex = /Connect\("([^"]+)"\)\s*To\("([^"]+)"\)/g;
+          
+          let match;
+          const nodes = [];
+          const connections = [];
+
+          // Extraer información de nodos
+          while ((match = nodesRegex.exec(data)) !== null) {
+            const [fullMatch, position, type, name] = match;
+            const [x, y] = position.split(',');
+            
+            nodes.push({
+              type,
+              name,
+              position: {
+                x: parseFloat((x/20)-25),
+                y: parseFloat((y/20)-25),
+              },
+              
+            });
+            console.log(nodes);
+          }
+
+          // Extraer información de conexiones
+          while ((match = connectionsRegex.exec(data)) !== null) {
+            const [fullMatch, from, to] = match;
+            connections.push({ from, to });
+          }
+
+          // Crear entidades A-Frame
+          const scene = document.querySelector('a-scene');
+
+          nodes.forEach(node => {
+            const hub = "NKHub"
+            const router = "NKRouter"
+            const pc = "NKCompaq"
+            if (node.type.includes(pc)){
+            //if (node.type == "NKCompaq"){
+                const entidad = document.createElement('a-entity');
+                entidad.setAttribute('geometry', {primitive: "box", width:2, height: 2, depth:2 })
+                //entidad.setAttribute('position', `${(node.position.x/20)-25} 0 ${((node.position.y/20)-25)} `);
+                entidad.object3D.position.set((node.position.x), 0, (node.position.y))
+                entidad.setAttribute("material", {src: "#pc", side: "double"});
+                scene.appendChild(entidad);
+            } else if (node.type.includes(hub)){
+            //} else if (node.type == "NKHub"){
+                const entidad = document.createElement('a-entity');
+                entidad.setAttribute('geometry', {primitive: "box", radius:1, height: 0.2})
+                //entidad.setAttribute('position', `${(node.position.x/20)-25} 0 ${((node.position.y/20)-25)} `);
+                entidad.object3D.position.set((node.position.x), 0, (node.position.y))
+                entidad.setAttribute("material", {src: "#hub", side: "double"});
+                let texto = document.createElement("a-text")
+
+            } else if (node.type.includes(router)){
+            //} else if (node.type == "NKRouter"){
+                const entidad = document.createElement('a-entity');
+                entidad.setAttribute('geometry', {primitive: "cylinder", width:1, height: 0.5})
+                //entidad.setAttribute('position', `${(node.position.x/20)-25} 0 ${((node.position.y/20)-25)} `);
+                entidad.object3D.position.set((node.position.x), 0, (node.position.y))
+                entidad.setAttribute('material', { color: "#808080" });
+                scene.appendChild(entidad); 
+            }
+          });
+          
+          
+          // Conectar entidades según las conexiones
+          connections.forEach(connection => {
+            const fromEntity = document.querySelector(`[data-name="${connection.from}"]`);
+            const toEntity = document.querySelector(`[data-name="${connection.to}"]`);
+
+            if (fromEntity && toEntity) {
+              const line = document.createElement('a-entity');
+              line.setAttribute('line', {
+                start: fromEntity.getAttribute('position'),
+                end: toEntity.getAttribute('position'),
+              });
+              scene.appendChild(line);
+            }
+          });
+        })
+        .catch(error => console.error('Error al leer el archivo:', error));
+    </script>
+  </head>
+  <body>
+    <a_assets>
+        <img src="texturas/pc.PNG" id="pc">
+        <img src="texturas/hub.PNG" id="hub">
+    </a_assets>
+    <a-scene>
+      <!-- Entidades y conexiones generadas dinámicamente irán aquí -->
+    </a-scene>
+  </body>
+</html>

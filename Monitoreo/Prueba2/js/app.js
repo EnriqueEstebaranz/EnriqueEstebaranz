@@ -57,7 +57,6 @@ AFRAME.registerComponent("paquete",{
                 }
             };
             ejecutarAnimacion(0);
-
             // Con objetivo de crear "realismo" meto una animación para bajar los paquetes que aun no se han activado
             const todosPaquetes = document.querySelectorAll("[paquete]");
             for (const unPaquete of todosPaquetes){

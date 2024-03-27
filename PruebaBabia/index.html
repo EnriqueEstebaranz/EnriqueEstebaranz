@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+  <title>Cargar Música con A-Frame</title>
+</head>
+<body>
+  <a-scene>
+    <a-assets>
+        <!-- Agrega tu archivo de música al conjunto de activos -->
+        <audio id="miMusica" src="https://cdn.glitch.global/e5a33efb-cdb0-455d-a282-6b1c588792fc/logrado.mp3?v=1700481244373"></audio>
+    </a-assets>
+
+    <!-- Entidad que reproduce la música -->
+
+    <a-entity id="miBoton" geometry="primitive: box" position="0 1.5 -5" color="blue">
+        <a-text value="Reproducir Sonido" position="-1 0 0"></a-text>
+        <!-- Asocia la reproducción del sonido a un evento de clic -->
+        <a-sound src="#miMusica" autoplay="false" sound-controller></a-sound>
+    </a-entity>
+    <!-- Otras entidades y contenido de la escena -->
+    <a-entity environment></a-entity>
+    <a-entity camera position="0 1.6 0"></a-entity>
+  </a-scene>
+  <script>
+    AFRAME.registerComponent('sound-controller', {
+    init: function () {
+        const miBoton = document.querySelector('#miBoton');
+        const miSonido = this.el.components.sound;
+
+        miBoton.addEventListener('click', function () {
+        miSonido.playSound();
+        });
+    }
+    });
+  </script>
+</body>
+</html>
+
+

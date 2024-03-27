@@ -41,7 +41,6 @@ AFRAME.registerComponent("pausa",{
 })
 
 
-  
 
 
 
@@ -136,6 +135,7 @@ AFRAME.registerComponent("simulacro",{
                         entidad.setAttribute("id", node.name)
                         escenario.appendChild(entidad); 
                     }
+                    escenario.setAttribute('escalarMapa', 'velocidad: 1');
                 });
                 
                 const connections = json.connections;

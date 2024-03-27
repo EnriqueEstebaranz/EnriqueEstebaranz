@@ -5,7 +5,9 @@ function colorAleatorio() {
     const rojo = Math.floor(Math.random() * 256); // Valor aleatorio componente rojo
     const verde = Math.floor(Math.random() * 256); // Valor aleatorio componente verde
     const azul = Math.floor(Math.random() * 256); // Valor aleatorio componente azul
+  
     const colorHex = `#${rojo.toString(16)}${verde.toString(16)}${azul.toString(16)}`;
+  
     return colorHex;
 }
 AFRAME.registerComponent('nodes', {
@@ -27,12 +29,6 @@ AFRAME.registerComponent('nodes', {
         //En IFRAME las posiciones no se deben dar con setAtribute, se debe tirar del object3d de three.js
         entidad.object3D.position.set(-40 + i*20, 0, -30)
         entidad.setAttribute("cambiador","")
-        let texto = document.createElement('a-text')//mismo proceso para crear una herramienta entidad 
-        texto.object3D.position.set(-40 + i * 20, 25, -29.2)
-        texto.setAttribute("value", "Nodo-" + identificador[i])
-        texto.setAttribute("color", "#000000");
-        texto.setAttribute("width", 20)
-        this.el.appendChild(texto)
         this.el.appendChild(entidad);
       }
       // Creo los paquetes
@@ -55,19 +51,14 @@ AFRAME.registerComponent("paquete", {
     init: function () {
         this.posicionInicial = this.el.getAttribute("position");
         this.pausado = false;
-        this.i = 0;
         this.animarPaquete();
     },
     animarPaquete: function () {
         let distancia = Math.abs(this.data.xder - (this.posicionInicial.x))
         const xder = this.data.xder;
-        // const xizq = this.data.xizq;
+        const xizq = this.data.xizq;
         const duracionMovimiento = 1000; // 1 segundo
         const el = this.el;
-        let i = 0
-        let guia = 0;
-        var sonar = document.getElementById('logrado');
-
         console.log("hola" + Math.abs(xder - this.posicionInicial.x))
         // Función para mover hacia xder y luego hacia xizq, repitiendo el ciclo
         const ejecutarAnimacionDerecha = (i)=>{
@@ -80,24 +71,18 @@ AFRAME.registerComponent("paquete", {
                     dur:duracionMovimiento,
                     easing:"linear"
                 });
-                
                 setTimeout(() => {
-                    this.i = this.i +1
-                    i = i+1
-                    ejecutarAnimacionDerecha(i);
-                    guia = 1
+                    ejecutarAnimacionDerecha(i + 1);
                 }, duracionMovimiento);
-            } else if (!this.pausado &&  i>=distancia){
-                this.i = 0
-                i = 0
-                sonar.components.sound.playSound();
-                ejecutarAnimacionIzquierda(i)
             } else {
-                console.log("hola")
+                ejecutarAnimacionIzquierda(0)
+
             }
         };
+
         const ejecutarAnimacionIzquierda = (i)=>{
-            if (!this.pausado && i < distancia ){
+
+            if (!this.pausado && i<  distancia ){
                 el.setAttribute('animation', {
                     property: "position", 
                     to: `${this.posicionInicial.x - 1} 
@@ -107,44 +92,20 @@ AFRAME.registerComponent("paquete", {
                     easing:"linear"
                 });
                 setTimeout(() => {
-                    this.i = this.i +1
-                    i = i+1
-                    tiktok.components.sound.playSound();
-                    ejecutarAnimacionIzquierda(i);
-                    guia = 2
+                    ejecutarAnimacionIzquierda(i + 1);
                 }, duracionMovimiento);
-            } else if (!this.pausado && i>=distancia){
-                this.i = 0
-                i = 0
-                sonar.components.sound.playSound();
-                ejecutarAnimacionDerecha(i);
+            } else {
+                ejecutarAnimacionDerecha(0)
 
-            } else{
-                console.log("hola")
             }
         };
-        ejecutarAnimacionDerecha(i);
-
+        ejecutarAnimacionDerecha(0);
         this.pausarAnimacion = () => {
             this.pausado = true;
-            console.log("i es:"+ this.i)
-            return this.i
-            
-        };
-        this.reproducirAnimacion = () => {
-            this.pausado = false;
-            i = this.i 
-            if (guia == 1){
-                console.log("i es:"+ i)
-                ejecutarAnimacionDerecha(i);
-            }else if (guia == 2){
-                console.log("i es:"+ i)
-                ejecutarAnimacionIzquierda(i);
-            }
         };
     }
 });
-AFRAME.registerComponent('pausar-animacion', {
+AFRAME.registerComponent('detener-animacion', {
     init: function () {
         this.el.addEventListener('click', () => {
             // Obtener todos los elementos con el componente 'paquete'
@@ -157,21 +118,6 @@ AFRAME.registerComponent('pausar-animacion', {
         });
     }
 });
-AFRAME.registerComponent('reproducir-animacion', {
-    init: function () {
-        this.el.addEventListener('click', () => {
-            // Obtener todos los elementos con el componente 'paquete'
-            const paquetes = document.querySelectorAll('[paquete]');
-
-            // Iterar sobre los paquetes y llamar al método para pausar la animación
-            paquetes.forEach(paquete => {
-                paquete.components.paquete.reproducirAnimacion();
-            });
-        });
-    }
-});
-  
-  
 
 
 

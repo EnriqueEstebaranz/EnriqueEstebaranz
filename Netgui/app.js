@@ -59,7 +59,7 @@ AFRAME.registerComponent("simulacro",{
             textoBoton.setAttribute('align', 'center');
             entidadBCA.appendChild(textoBoton);
             // Leer el documento .nkp
-            fetch('netgui.txt')
+            fetch('/Netgui/netgui.txt')
                 .then(response => response.text())
                 .then(data => {
                 // Procesar el contenido del archivo .nkp
@@ -83,14 +83,14 @@ AFRAME.registerComponent("simulacro",{
                             y: parseFloat((y/20)-25),
                         },
                     });
-                    //console.log(nodes);
+                    console.log(nodes);
                 }
 
                 // Extraigo la información de las conexiones del archivo .nkp
                 while ((match = connectionsRegex.exec(data)) !== null) {
                     const [fullMatch, from, to] = match;
                     connections.push({ from, to });
-                    //console.log(connections);
+                    console.log(connections);
                 }
 
                 // Crear entidades A-Frame
