@@ -5,13 +5,15 @@
     background-color: #444;
     font-size   :         25px;
     margin-right: 0px;;
-
     color       :       white;
     float       :        right;
     margin-left :        0px;
     padding     :         10px;
     position     :     absolute;
     text-align    : center;
+}
+#contexto{
+    text-align: left;
 }
 h2 {
     text-align: left;
