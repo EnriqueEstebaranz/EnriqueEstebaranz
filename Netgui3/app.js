@@ -32,11 +32,11 @@ AFRAME.registerComponent("pausa",{
     }
 })
 
-function rastroHistorial(posicion){
+function rastroHistorial(posicion, posicionEscenario, color){
     const cubo = document.createElement('a-entity');
     cubo.setAttribute('geometry', {primitive: "box", width:0.4, height:0.1, depth:0.4});
-    cubo.setAttribute('material', {color: 'red' });
-    cubo.setAttribute('position', `${posicion.x} ${posicion.y} ${posicion.z}`)
+    cubo.setAttribute('material', {color: color });
+    cubo.setAttribute('position', `${posicion.x} ${posicionEscenario.y} ${posicion.z}`)
     document.querySelector('a-scene').appendChild(cubo);
 }
 
@@ -82,9 +82,9 @@ AFRAME.registerComponent("simulacro",{
             const posicionEscenario = escenario.getAttribute('position')
             let initialY = 0; // Comienza en la posición Y = 0
             setInterval(() => {
-                initialY += 1; // Incrementa en 1 metro cada segundo
+                initialY += 0.2; // Incrementa en 1 metro cada segundo
                 escenario.setAttribute('position', `0 ${initialY} 0`);
-            }, 1000); // Actualiza cada 1000 milisegundos (1 segundo)
+            }, 200); // Actualiza cada 1000 milisegundos (1 segundo)
         })
     },
     
@@ -185,7 +185,7 @@ AFRAME.registerComponent("simulacro",{
                         // Introduzco el paquete en el escenario
                         const pqt = document.createElement('a-entity')
                         pqt.setAttribute('geometry', {primitive: "box", width:0.3, height:0.3, depth:0.3});
-                        pqt.setAttribute('material', {color: 'red' });
+                        pqt.setAttribute('material', {color: colorAleatorio() });
                         const salida = document.getElementById(paquete.route[0])
                         pqt.object3D.position.copy(salida.object3D.position);
                         escenario.appendChild(pqt)
@@ -194,6 +194,7 @@ AFRAME.registerComponent("simulacro",{
                             if (i >= paquete.route.length){
                                 // Meter sonido de fin de envio o algo
                                 escenario.removeChild(pqt);
+                                clearInterval(intervalo);
                                 return;
                             }
 
@@ -206,14 +207,17 @@ AFRAME.registerComponent("simulacro",{
                                     easing: 'linear'
                                 });
                             }
-                            pqt.addEventListener('animationbegin', () => 
-                            setInterval(() => {
-                                const posicion = pqt.getAttribute("position");
-                                rastroHistorial(posicion)
-                            }, 200), {once: true}); 
                             pqt.addEventListener('animationcomplete', () => movimiento(i+1), {once: true}); 
                         };
+                        let intervalo = setInterval(() => {
+                            const posicion = pqt.getAttribute("position");
+                            const posicionEscenario = escenario.getAttribute("position");
+                            const material = pqt.getAttribute('material');
+                            const color = material.color;
+                            rastroHistorial(posicion, posicionEscenario, color)
+                        }, 200);
                         movimiento(1);
+                        
                     }, paquete.time * 1000);
                 })
             })
