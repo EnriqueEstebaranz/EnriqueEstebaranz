@@ -50,21 +50,9 @@ AFRAME.registerComponent("simulacro",{
             const inicio = document.querySelector("#iniciador");
             scene.removeChild(inicio);
 
-            // Función que agrega controles para manejar el entorno
             this.agregarControles();
-
-            // Función que crea el mapa descrito en el archivo Netgui.nkp
             this.construirMapa(escenario);
-
-            // Función que mete los paquetes y lo envia entre nodos
-            this.envioPaquetes(escenario);
-
-            const posicionEscenario = escenario.getAttribute('position')
-            let initialY = 0; // Comienza en la posición Y = 0
-            setInterval(() => {
-                initialY += 1; // Incrementa en 1 metro cada segundo
-                escenario.setAttribute('position', `0 ${initialY} 0`);
-            }, 1000); // Actualiza cada 1000 milisegundos (1 segundo)
+            
         })
     },
     
@@ -95,8 +83,8 @@ AFRAME.registerComponent("simulacro",{
             .then(response => response.json())
             .then(json => {
             const nodes = json.nodes;
-            datosNetgui = json.nodes;
             // Crear entidades A-Frame
+    
             nodes.forEach(node => {
                 const hub = "NKHub"
                 const router = "NKRouter"
@@ -113,7 +101,7 @@ AFRAME.registerComponent("simulacro",{
                 } else if (node.type.includes(hub)){
                 //} else if (node.type == "NKHub"){
                     const entidad = document.createElement('a-entity');
-                    entidad.setAttribute('geometry', {primitive: "box", width:1, height: 0.2})
+                    entidad.setAttribute('geometry', {primitive: "box", radius:1, height: 0.2})
                     //entidad.setAttribute('position', `${(node.position.x/20)-25} 0 ${((node.position.y/20)-25)} `);
                     entidad.object3D.position.set((node.position[0]), 0, (node.position[1]))
                     entidad.setAttribute("material", {src: "#hub", side: "double"});
@@ -122,7 +110,7 @@ AFRAME.registerComponent("simulacro",{
                 } else if (node.type.includes(router)){
                 //} else if (node.type == "NKRouter"){
                     const entidad = document.createElement('a-entity');
-                    entidad.setAttribute('geometry', {primitive: "cylinder", radius:1, height: 0.5})
+                    entidad.setAttribute('geometry', {primitive: "cylinder", width:1, height: 0.5})
                     //entidad.setAttribute('position', `${(node.position.x/20)-25} 0 ${((node.position.y/20)-25)} `);
                     entidad.object3D.position.set((node.position[0]), 0, (node.position[1]))
                     entidad.setAttribute('material', { color: "#808080" });
@@ -154,46 +142,13 @@ AFRAME.registerComponent("simulacro",{
     envioPaquetes: function(escenario){
         fetch('packages.json')
             .then(response => response.json())
-            .then(json => {
-            const paquetes = json.packages
+            .then(data => {
                 paquetes.forEach(paquete => {
                     setTimeout(() => {
-                        if (paquete.route.length < 2){
-                            console.error("Ruta no valida")
-                            return
-                        }
-                        // Introduzco el paquete en el escenario
-                        const pqt = document.createElement('a-entity')
-                        pqt.setAttribute('geometry', {primitive: "box", width:0.3, height:0.3, depth:0.3});
-                        pqt.setAttribute('material', {color: 'red' });
-                        const salida = document.getElementById(paquete.route[0])
-                        pqt.object3D.position.copy(salida.object3D.position);
-                        escenario.appendChild(pqt)
-
-                        const movimiento = (i) => {
-                            if (i >= paquete.route.length){
-                                // Meter sonido de fin de envio o algo
-                                escenario.removeChild(pqt);
-                                return;
-                            }
-
-                            const siguiente = document.getElementById(paquete.route[i]);
-                            if (siguiente){
-                                pqt.setAttribute('animation', {
-                                    property: 'position',
-                                    to: `${siguiente.object3D.position.x} ${siguiente.object3D.position.y} ${siguiente.object3D.position.z}`,
-                                    dur:2000,
-                                    easing: 'linear'
-                                });
-                            }
-
-                            pqt.addEventListener('animationcomplete', () => movimiento(i+1), {once: true}); 
-                        };
-                        movimiento(1);
-                    }, paquete.time * 1000);
+                        
+                    })
                 })
             })
-            .catch(error => console.error('Error al cargar packages.json:', error));
     }
 
 });
