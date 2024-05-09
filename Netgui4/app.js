@@ -1,3 +1,4 @@
+// Para que se seleccionen colores distintos y que no se pueda enviar dos paquetes del mismo color a la vez.
 let coloresActivos = new Set();
 
 function colorAleatorio() {
@@ -8,16 +9,35 @@ function colorAleatorio() {
         const azul = Math.floor(Math.random() * 256);
         colorHex = `#${rojo.toString(16).padStart(2, '0')}${verde.toString(16).padStart(2, '0')}${azul.toString(16).padStart(2, '0')}`;
     } while (coloresActivos.has(colorHex));  // Verificar si el color ya está en uso
-
-    coloresActivos.add(colorHex);  // Marcar el color como en uso
+    // Color en uso
+    coloresActivos.add(colorHex); 
     return colorHex;
 }
 
 function liberarColor(color) {
-    coloresActivos.delete(color);  // Remover el color del conjunto
+    // Libero el color
+    coloresActivos.delete(color);
 }
 
 
+
+// Componente difuminado
+AFRAME.registerComponent('difuminado',{
+    schema: {
+        tiempo: {type: "number", default:4000},
+        opacidad: {type: "number", default:0.1}
+        },
+        init: function () {
+            this.el.setAttribute('animation__fadeout', {
+                property: 'material.opacity',
+                to: this.data.opacidad,
+                dur: this.data.tiempo,
+                easing: 'linear'
+            });
+    }
+});
+
+// Componente trazador
 AFRAME.registerComponent("trazador", {
     schema: {
         forma: {type: 'string', default: 'caja'},
@@ -47,6 +67,7 @@ AFRAME.registerComponent("trazador", {
             }
             entidad.setAttribute('material', 'color', color);
             entidad.setAttribute('position', `${posicion.x} ${posicionEscenario.y} ${posicion.z}`);
+            entidad.setAttribute('difuminado', '');
             document.querySelector('a-scene').appendChild(entidad);
         },this.data.intervalo)
     },
@@ -57,7 +78,7 @@ AFRAME.registerComponent("trazador", {
     }
 });
 
-
+// Componente encargado de la creación y el envio de paquetes
 AFRAME.registerComponent("envio-paquetes", {
     
     // init se llama automaticamente en cuanto el componente "____" se inicializa
@@ -74,6 +95,7 @@ AFRAME.registerComponent("envio-paquetes", {
                 paquetes.forEach(paquete => {
                     setTimeout(() => {
                         if (paquete.route.length < 2){
+                            liberarColor(color);
                             console.error("Ruta no valida")
                             return
                         }
@@ -113,7 +135,7 @@ AFRAME.registerComponent("envio-paquetes", {
     }
 })
 
-
+// Componente encargado de la creación del mapa en el que se realiza el envio
 AFRAME.registerComponent("simulacro",{
     init:function () {
         this.el.addEventListener("click",()=>{
