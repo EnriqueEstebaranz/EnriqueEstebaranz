@@ -1,0 +1,66 @@
+{
+  "nodes": [
+    {
+      "position": [
+        -19.3,
+        -20.5
+      ],
+      "type": "NKCompaq",
+      "name": "pc1"
+    },
+    {
+      "position": [
+        -2.4499999999999993,
+        -20.05
+      ],
+      "type": "NKCompaq",
+      "name": "pc2"
+    },
+    {
+      "position": [
+        -10.8,
+        -11.45
+      ],
+      "type": "NKRouter",
+      "name": "r1"
+    },
+    {
+      "position": [
+        -16.45,
+        -14.6
+      ],
+      "type": "NKHub",
+      "name": "hub1"
+    },
+    {
+      "position": [
+        -5.5,
+        -14.85
+      ],
+      "type": "NKHub",
+      "name": "hub2"
+    }
+  ],
+  "connections": [
+    {
+      "type": "link",
+      "from": "hub1",
+      "to": "pc1"
+    },
+    {
+      "type": "link",
+      "from": "hub1",
+      "to": "r1"
+    },
+    {
+      "type": "link",
+      "from": "hub2",
+      "to": "r1"
+    },
+    {
+      "type": "link",
+      "from": "pc2",
+      "to": "hub2"
+    }
+  ]
+}
