@@ -1,0 +1,4 @@
+<packages>
+time(1.0); route("dnscom","hub1","r1","hub4","pc1"); id("PING"); duracion("2000")
+time(9.0); route("pc1","hub4","r1","hub1","dnscom"); id("ACK"); duracion("2000")
+<\packages>
