@@ -442,19 +442,21 @@ AFRAME.registerComponent("envio-paquetes", {
             // Numero total de paquetes que se van a enviar en la simulación
             totalPaquetes = json.packages.length;
             json.packages.forEach(paquete => {
-                const delay = paquete.time * 1000;
                 const identificador = paquete.id
                 const duracion = paquete.duracion
+                
+                const delay = paquete.time * 1000;
                 const timeout = setTimeout(() => {
                     if (!this.pausa) {
                         numeroPaquetes++
                         this.animacion(paquete, identificador, duracion);  
                     }
-                    
                     // Elimina el timeout del almacen después de ejecutarse
                     this.almacenTimeouts = this.almacenTimeouts.filter(t => t.id !== timeout);
                 }, delay);
-                this.almacenTimeouts.push({ id: timeout, package: paquete, delay: delay, startTime: Date.now(), remainingTime: delay, idpaquete: identificador, durpaquete:duracion});
+
+            this.almacenTimeouts.push({ id: timeout, package: paquete, delay: delay, startTime: Date.now(), 
+                                            remainingTime: delay, idpaquete: identificador, durpaquete:duracion});
             })
         })
         .catch(error => console.error('Error loading packages.json:', error));
@@ -467,7 +469,6 @@ AFRAME.registerComponent("envio-paquetes", {
         }
         if (id == ""){
             id = "paquete" + numeroPaquetes
-            console.log(id)
         }
         if (duracion == ""){
             duracion = durDefecto;
@@ -482,9 +483,8 @@ AFRAME.registerComponent("envio-paquetes", {
         pqt.object3D.position.copy(salida.object3D.position);
         pqt.setAttribute('id', id)
 
-        
-        const destinoFinal = paquete.route[paquete.route.length - 1]; 
         const origen = paquete.route[0]; 
+        const destinoFinal = paquete.route[paquete.route.length - 1]; 
         crearCuadroNombrePaquete(id, origen, destinoFinal, pqt);
 
         pqt.setAttribute('trazador', {forma: 'esfera', intervalo: 30});
@@ -503,7 +503,7 @@ AFRAME.registerComponent("envio-paquetes", {
                     pqt.removeAttribute('trazador')
                     totalPaquetesEnviados +=1
                 }else{
-                    console.log("No existe el nodos destino")
+                    console.log("No existe el nodo destino")
                 }
                 if (totalPaquetesEnviados == totalPaquetes){
                     setTimeout(()=>{
@@ -512,7 +512,6 @@ AFRAME.registerComponent("envio-paquetes", {
                         console.log("puesse ha finalizado la simulación")
                     },2000)
                 }
-                
                 liberarColor(color);
                 return;
             }
@@ -536,19 +535,15 @@ AFRAME.registerComponent("envio-paquetes", {
         this.almacenTimeouts = this.almacenTimeouts.map(t => {
             clearTimeout(t.id);  // Cancela el timeout actual
             const currentTime = Date.now();
-            console.log("aqui")
-            console.log(t.remainingTime)
             t.remainingTime = t.remainingTime - (currentTime - t.startTime);  // Calcula el tiempo restante
-            console.log("despues")
-            console.log(t.remainingTime)
             return t
         });
+        console.log("pausar")
         console.log(this.almacenTimeouts)
     },
     reanudar: function() {
         this.pausa = false;
         this.almacenTimeouts.forEach(t => {
-
             const timeout = setTimeout(() => {
                 numeroPaquetes++
                 this.animacion(t.package,t.idpaquete, t.durpaquete);
@@ -557,8 +552,8 @@ AFRAME.registerComponent("envio-paquetes", {
             }, t.remainingTime);
             t.startTime = Date.now();
             t.id = timeout; // Actualizar el ID del timeout
-            
         });
+        console.log("reanudar")
         console.log(this.almacenTimeouts)
     }
 });
@@ -666,7 +661,7 @@ AFRAME.registerComponent("simulacro",{
             .then(response => response.json())
             .then(json => {
             const nodes = json.nodes;
-            datosNetgui = json.nodes;
+
             // Crear entidades A-Frame
             nodes.forEach(node => {
                 const entidad = document.createElement('a-entity');
@@ -709,7 +704,7 @@ AFRAME.registerComponent("simulacro",{
                     entidad.setAttribute('trazador', {forma: 'switch', intervalo: 1000});
                     entidad.setAttribute('direcciones','');
                     entidad.setAttribute('nombre-en-plano', {nombre: node.name,x: node.position[0],y: 0,z: node.position[1]});
-                    escenario.appendChild(entidad);   
+                    escenario.appendChild(entidad); 
                 }
             });
         
@@ -718,7 +713,6 @@ AFRAME.registerComponent("simulacro",{
             connections.forEach(connection => {
                 const fromEntity = document.querySelector(`#${connection.from}`);
                 const toEntity = document.querySelector(`#${connection.to}`);
-    
                 if (fromEntity && toEntity) {
                     const line = document.createElement('a-entity');
                     line.setAttribute('line', {
@@ -728,6 +722,7 @@ AFRAME.registerComponent("simulacro",{
                     escenario.appendChild(line);
                 }
             });
+
             connections.forEach(connection => {
                 if (!conexionesPorNodo[connection.from]) {
                     conexionesPorNodo[connection.from] = [];
@@ -736,7 +731,7 @@ AFRAME.registerComponent("simulacro",{
                     conexionesPorNodo[connection.to] = [];
                 }
                 conexionesPorNodo[connection.from].push(connection.to);
-                conexionesPorNodo[connection.to].push(connection.from);
+                conexionesPorNodo[connection.to].push(connection.from); 
             });
         })
         .catch(error => console.error("Error al leer el archivo:", error));
@@ -750,9 +745,7 @@ AFRAME.registerComponent("simulacro",{
     crearhistorial: function (escenario){
         const historial = document.createElement("a-entity")
         historial.setAttribute('historial',{movimientoVertical: 0.05, tiempo: 50})
-        historial.setAttribute("id", "historieta")
+        historial.setAttribute("id", "EntidadHistorial")
         escenario.appendChild(historial);
     }
 });
-
-
