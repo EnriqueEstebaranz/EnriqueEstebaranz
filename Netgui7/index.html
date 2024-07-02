@@ -43,8 +43,8 @@
 
         <a-plane rotation="-90 0 0" width="100" height="100" color="#7BC8A4" material="src: #groundTexture; repeat: 10 10;" position="0 -1 0"></a-plane>
 
-        <a-entity movement-controls = "fly: true" wasd-controls = "fly: true" position = "0 1.6 0">
-            <a-entity camera look-controls  id = "camara" ></a-entity>
+        <a-entity >
+            <a-entity camera position = "0 1.6 0" movement-controls = "fly: true" look-controls wasd-controls = "fly: true" id = "camara" ></a-entity>
             <a-entity cursor = "rayOrigin:mouse"></a-entity> 
             <a-entity laser-controls = "hand:right"></a-entity> 
         </a-entity>
