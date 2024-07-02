@@ -132,28 +132,40 @@ AFRAME.registerComponent('movement-restrictor', {
 
 
 AFRAME.registerComponent("mostrar-historial", {
+    paquetesClicados : [],
     init: function() {
         this.el.addEventListener("click", () => {
+
             this.mostrar()
             this.botonAtras()
         });
     },
     mostrar:function(){
+
         // Primero para la simulación porque nos centramos en el trayectod e un paquete ya realizado.
         const  componentePR = document.querySelector('#Boton-Pausa-Reanudar');
         if (componentePR){
             if(componentePR.components['pausa-reproducir'].getState()!== "pausa"){
                 componentePR.components['pausa-reproducir'].setPause()
             }
-            
         }
 
-        
-        const identificador =this.el.getAttribute("id");
-        // Hacer invisibles todas las entidades con difuminado excepto el paquete seleccionado
+        const identificador = this.el.getAttribute("id");
+        const index = this.paquetesClicados.indexOf(identificador);
+        if (index > -1) {
+            // Eliminar si ya está seleccionado
+            this.paquetesClicados.splice(index, 1);
+        } else {
+            // Agregar si no está seleccionado
+            this.paquetesClicados.push(identificador);
+        }
+        console.log("salida"+this.paquetesClicados)
+        // Hacer invisibles todas las entidades con difuminado excepto los paquetes seleccionado
         const entidades = document.querySelectorAll('[difuminado]');
         entidades.forEach(entidad => {
-            if ((entidad.getAttribute('id') !== identificador)  && (entidad.getAttribute('id') !== "guia") ) {
+            if (this.paquetesClicados.includes(entidad.getAttribute('id') )  || (entidad.getAttribute('id') == "guia") ) {
+                entidad.setAttribute('visible', 'true');
+            } else {
                 entidad.setAttribute('visible', 'false');
             }
         });
@@ -189,7 +201,7 @@ AFRAME.registerComponent("mostrar-historial", {
             });
         });
     }
-})
+});
 
 AFRAME.registerComponent("pausa-reproducir", {
     init: function() {
@@ -221,8 +233,6 @@ AFRAME.registerComponent("pausa-reproducir", {
         this.el.setAttribute("material", {src: "#pausa"});
         // Asegurarse de que el componente envio-paquetes existe
         const envioEntity = document.querySelector('[envio-paquetes]');
-        const botonreproducir = document.querySelectorAll('[reproducir]');
-        const botonpausar = document.querySelectorAll('[pausa]');
         document.querySelectorAll("[animation]").forEach((element) => {
             element.emit('animation-resume');
         });
@@ -236,7 +246,7 @@ AFRAME.registerComponent("pausa-reproducir", {
         historialEntidad.components['historial'].reanuda();
 
     },
-    finalSimulación:function(){
+    finalSimulacion:function(){
         this.setPause(); // Forzar la pausa
         const boton = document.querySelector('[pausa-reproducir]')
         boton.parentNode.removeChild(boton);
@@ -257,7 +267,6 @@ AFRAME.registerComponent("reinicio", {
     
 });
 
-
 AFRAME.registerComponent('sonido', {
 
     init: function () {
@@ -273,16 +282,13 @@ AFRAME.registerComponent('sonido', {
     },
     setSound:function() {
         this.state ='sonando'
-
         const botonSonido = document.querySelector('[sonido]');
         botonSonido.setAttribute("material", {src: "#sonando"});
     },
     setMuted:function() {
         this.state ='muteado'
-
         const botonSonido = document.querySelector('[sonido]');
         botonSonido.setAttribute("material", {src: "#silencio"});
-    
     },
     getState: function() {
         return this.state;
@@ -301,13 +307,12 @@ AFRAME.registerComponent('paquetes-enviados', {
       // Calcular la posición para el nuevo paquete en la pila
       const posicionBase = this.el.object3D.position;
       const nuevaAltura = (this.pila.length + 1) * this.data.alturaPaquete;
-      
       paquete.setAttribute('position', `${posicionBase.x + 2} ${nuevaAltura} ${posicionBase.z+ 2}`);
       this.pila.push(paquete);
     }
 });
 
-// Click y muestro conexiones
+
 AFRAME.registerComponent('direcciones',{
     init: function(){
         this.el.addEventListener("click", () => {
@@ -454,10 +459,12 @@ AFRAME.registerComponent("envio-paquetes", {
                     // Elimina el timeout del almacen después de ejecutarse
                     this.almacenTimeouts = this.almacenTimeouts.filter(t => t.id !== timeout);
                 }, delay);
-
+                   
             this.almacenTimeouts.push({ id: timeout, package: paquete, delay: delay, startTime: Date.now(), 
                                             remainingTime: delay, idpaquete: identificador, durpaquete:duracion});
+            
             })
+            
         })
         .catch(error => console.error('Error loading packages.json:', error));
     },
@@ -468,7 +475,7 @@ AFRAME.registerComponent("envio-paquetes", {
             return;
         }
         if (id == ""){
-            id = "paquete" + numeroPaquetes
+            id = "Paquete " + numeroPaquetes
         }
         if (duracion == ""){
             duracion = durDefecto;
@@ -508,7 +515,7 @@ AFRAME.registerComponent("envio-paquetes", {
                 if (totalPaquetesEnviados == totalPaquetes){
                     setTimeout(()=>{
                         const componentePR = document.querySelector('#Boton-Pausa-Reanudar');
-                        componentePR.components['pausa-reproducir'].finalSimulación()
+                        componentePR.components['pausa-reproducir'].finalSimulacion()
                         console.log("puesse ha finalizado la simulación")
                     },2000)
                 }
@@ -534,6 +541,7 @@ AFRAME.registerComponent("envio-paquetes", {
         this.pausa = true;
         this.almacenTimeouts = this.almacenTimeouts.map(t => {
             clearTimeout(t.id);  // Cancela el timeout actual
+            console.log(this.almacenTimeouts) 
             const currentTime = Date.now();
             t.remainingTime = t.remainingTime - (currentTime - t.startTime);  // Calcula el tiempo restante
             return t
