@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="js/app.js"></script>
+  </head>
+  <body>
+
+
+    <a-scene>
+
+    
+      <a_assets>
+        <img src="texturas/fibra.jpg" id="fibra">
+        <img src="texturas/mas.png" id="mas">
+        <img src="texturas/menos.png" id="menos">
+        <img src="texturas/aceptar.avif" id="aceptar">
+    </a_assets>
+    <a-sky src ="#fibra"></a-sky>
+      <!-- <a-entity cubos="numero: 10 "></a-entity>-->
+      <a-entity id="eliminar">
+        <a-entity geometry = "primitive: box; width: 5; height: 5" position="5 2 -10 " material = "shader:flat; src:#mas"       actua ="accion: suma"></a-entity>
+        <a-entity geometry = "primitive: box; width: 5; height: 5" position="-5 2 -10 " material = "shader:flat; src:#menos"    actua ="accion: resta"></a-entity>
+        <a-entity geometry = "primitive: box; width: 10; height: 5" position="0 -5 -10 " material = "shader:flat; src:#aceptar" actua ="accion: acepta"></a-entity>  
+      </a-entity>
+        <a-entity movement-controls="fly: true" position="0 5 20"></a-entity>
+        <a-entity camera position="0 0 0" look-controls></a-entity>
+        <a-entity cursor="rayOrigin:mouse"></a-entity>
+        <a-entity laser-controls="hand: right"></a-entity>
+        <a-text value="0 cubos" color="white" position = "0 -0.1 -1" width="1" align="center"></a-text> <!--width da el tamaño del texto, "sustituye al font size"-->
+      </a-entity>
+    </a-scene>
+    
+  </body>
+</html>
