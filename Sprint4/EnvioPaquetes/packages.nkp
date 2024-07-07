@@ -1,0 +1,13 @@
+<packages>
+time(2.0); route("pc1","hub4","r1","hub1","dnscom")
+time(4.0); route("dnsnet","hub3","r4","hub5","pc2")
+time(4.0); route("dnscom","hub1","r2","hub2","dnsroot2")
+time(7.0); route("dnsemp1","hub4","r1","hub1","r2","hub2","r3","hub3","dnsnet")
+time(10.0); route("pc2","hub5","r4","hub3","dnsnet")
+time(8.0); route("dnsemp1","hub4","r1","hub1","r2","hub2","dnsroot1")
+time(9.0); route("dnscom","hub1","r1","hub4","dnsemp1")
+time(5.0); route("pc2","hub5","r4","hub3","r3","hub2","r2","hub1","r1","hub4","pc1")
+time(13.0); route("pc1","hub4","r1","hub1","dnscom")
+time(14.0); route("pc2","hub5","r4","hub3","dnsnet")
+time(16.0); route("dnscom","hub1","r2","hub2","dnsroot2")
+<\packages>
