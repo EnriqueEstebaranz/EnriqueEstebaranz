@@ -3,146 +3,140 @@
     {
       "time": 2.0,
       "route": [
-        "pc1",
-        "hub4",
-        "r1",
-        "hub1",
-        "dnscom"
+        "pc2",
+        "hub2"
       ],
-      "id": "",
+      "id": "TTL1",
       "duracion": ""
     },
     {
       "time": 4.0,
       "route": [
-        "dnsnet",
-        "hub3",
-        "r4",
-        "hub5",
+        "hub2",
         "pc2"
       ],
-      "id": "",
+      "id": "Time Exceeded",
       "duracion": ""
     },
     {
-      "time": 4.0,
+      "time": 6.0,
       "route": [
-        "dnscom",
-        "hub1",
-        "r2",
+        "pc2",
         "hub2",
-        "dnsroot2"
+        "r1"
       ],
-      "id": "",
-      "duracion": ""
-    },
-    {
-      "time": 7.0,
-      "route": [
-        "dnsemp1",
-        "hub4",
-        "r1",
-        "hub1",
-        "r2",
-        "hub2",
-        "r3",
-        "hub3",
-        "dnsnet"
-      ],
-      "id": "",
+      "id": "TTL2",
       "duracion": ""
     },
     {
       "time": 10.0,
       "route": [
-        "pc2",
-        "hub5",
-        "r4",
-        "hub3",
-        "dnsnet"
-      ],
-      "id": "",
-      "duracion": ""
-    },
-    {
-      "time": 8.0,
-      "route": [
-        "dnsemp1",
-        "hub4",
         "r1",
-        "hub1",
-        "r2",
         "hub2",
-        "dnsroot1"
+        "pc2"
       ],
-      "id": "",
+      "id": "Time Exceeded",
       "duracion": ""
-    },
-    {
-      "time": 9.0,
-      "route": [
-        "dnscom",
-        "hub1",
-        "r1",
-        "hub4",
-        "dnsemp1"
-      ],
-      "id": "",
-      "duracion": "3000"
-    },
-    {
-      "time": 5.0,
-      "route": [
-        "pc2",
-        "hub5",
-        "r4",
-        "hub3",
-        "r3",
-        "hub2",
-        "r2",
-        "hub1",
-        "r1",
-        "hub4",
-        "pc1"
-      ],
-      "id": "",
-      "duracion": ""
-    },
-    {
-      "time": 13.0,
-      "route": [
-        "pc1",
-        "hub4",
-        "r1",
-        "hub1",
-        "dnscom"
-      ],
-      "id": "",
-      "duracion": "3000"
     },
     {
       "time": 14.0,
       "route": [
         "pc2",
-        "hub5",
-        "r4",
-        "hub3",
-        "dnsnet"
+        "hub2",
+        "r1",
+        "r3"
       ],
-      "id": "",
+      "id": "TTL3",
       "duracion": ""
     },
     {
-      "time": 16.0,
+      "time": 20.0,
       "route": [
-        "dnscom",
-        "hub1",
-        "r2",
+        "r3",
+        "r1",
         "hub2",
-        "dnsroot2"
+        "pc2"
       ],
-      "id": "",
-      "duracion": "3000"
+      "id": "Time Exceeded",
+      "duracion": ""
+    },
+    {
+      "time": 26.0,
+      "route": [
+        "pc2",
+        "hub2",
+        "r1",
+        "r3",
+        "r4"
+      ],
+      "id": "TTL4",
+      "duracion": ""
+    },
+    {
+      "time": 34.0,
+      "route": [
+        "r4",
+        "r3",
+        "r1",
+        "hub2",
+        "pc2"
+      ],
+      "id": "Time Exceeded",
+      "duracion": ""
+    },
+    {
+      "time": 42.0,
+      "route": [
+        "pc2",
+        "hub2",
+        "r1",
+        "r3",
+        "r4",
+        "hub6"
+      ],
+      "id": "TTL5",
+      "duracion": ""
+    },
+    {
+      "time": 52.0,
+      "route": [
+        "hub6",
+        "r4",
+        "r3",
+        "r1",
+        "hub2",
+        "pc2"
+      ],
+      "id": "Time Exceeded",
+      "duracion": ""
+    },
+    {
+      "time": 62.0,
+      "route": [
+        "pc2",
+        "hub2",
+        "r1",
+        "r3",
+        "r4",
+        "hub6",
+        "pc6"
+      ],
+      "id": "TTL6",
+      "duracion": ""
+    },
+    {
+      "time": 74.0,
+      "route": [
+        "pc6",
+        "hub6",
+        "r4",
+        "r3",
+        "r1",
+        "hub2",
+        "pc2"
+      ],
+      "id": "ICMP Echo Reply",
+      "duracion": ""
     }
   ]
 }
