@@ -1,78 +1,383 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+  <head><script src="../assets/js/color-modes.js"></script>
+
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="Estilo.css">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.122.0">
+    <title>Album example · Bootstrap v5.3</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/album/">
+
     
-    <title>Monitoreo en Realidad Virtual</title>
-</head>
-<body>
-    <header>
-        <h1>Monitoreo en Realidad Virtual</h1>
-    </header>
-    <div>
-        <nav>
-            <ul>
-                <li><a href="Paginas/Pagina1.html" target="contenido"><i class="fa fa-home" style="font-size:30px"></i></i> Home </a></li>
-                <li><a href="Paginas/Pagina2.html" target="contenido">Página 2</a></li>
-                <li><a href="Paginas/Pagina3.html" target="contenido">Página 3</a></li>
-            </ul>
-        </nav>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+
+<link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .b-example-divider {
+        width: 100%;
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+      }
+
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
+
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .btn-bd-primary {
+        --bd-violet-bg: #712cf9;
+        --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+        --bs-btn-font-weight: 600;
+        --bs-btn-color: var(--bs-white);
+        --bs-btn-bg: var(--bd-violet-bg);
+        --bs-btn-border-color: var(--bd-violet-bg);
+        --bs-btn-hover-color: var(--bs-white);
+        --bs-btn-hover-bg: #6528e0;
+        --bs-btn-hover-border-color: #6528e0;
+        --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+        --bs-btn-active-color: var(--bs-btn-hover-color);
+        --bs-btn-active-bg: #5a23c8;
+        --bs-btn-active-border-color: #5a23c8;
+      }
+
+      .bd-mode-toggle {
+        z-index: 1500;
+      }
+
+      .bd-mode-toggle .dropdown-menu .active .bi {
+        display: block !important;
+      }
+    </style>
+
+    
+  </head>
+  <body>
+    <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+      <symbol id="check2" viewBox="0 0 16 16">
+        <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+      </symbol>
+      <symbol id="circle-half" viewBox="0 0 16 16">
+        <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/>
+      </symbol>
+      <symbol id="moon-stars-fill" viewBox="0 0 16 16">
+        <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+        <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"/>
+      </symbol>
+      <symbol id="sun-fill" viewBox="0 0 16 16">
+        <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+      </symbol>
+    </svg>
+
+    <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+      <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center"
+              id="bd-theme"
+              type="button"
+              aria-expanded="false"
+              data-bs-toggle="dropdown"
+              aria-label="Toggle theme (auto)">
+        <svg class="bi my-1 theme-icon-active" width="1em" height="1em"><use href="#circle-half"></use></svg>
+        <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
+        <li>
+          <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+            <svg class="bi me-2 opacity-50" width="1em" height="1em"><use href="#sun-fill"></use></svg>
+            Light
+            <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+            <svg class="bi me-2 opacity-50" width="1em" height="1em"><use href="#moon-stars-fill"></use></svg>
+            Dark
+            <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
+            <svg class="bi me-2 opacity-50" width="1em" height="1em"><use href="#circle-half"></use></svg>
+            Auto
+            <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
+          </button>
+        </li>
+      </ul>
     </div>
-    <div id = "descripcion">
-        <h1>
-            Objetivo
-        </h1>
+
+    
+<header data-bs-theme="dark">
+  <div class="collapse text-bg-dark" id="navbarHeader">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8 col-md-7 py-4">
+          <h4>About</h4>
+          <p class="text-body-secondary">Add some information about the album below, the author, or any other background context. Make it a few sentences long so folks can pick up some informative tidbits. Then, link them off to some social networking sites or contact information.</p>
+        </div>
+        <div class="col-sm-4 offset-md-1 py-4">
+          <h4>Contact</h4>
+          <ul class="list-unstyled">
+            <li><a href="#" class="text-white">Follow on Twitter</a></li>
+            <li><a href="#" class="text-white">Like on Facebook</a></li>
+            <li><a href="#" class="text-white">Email me</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="navbar navbar-dark bg-dark shadow-sm">
+    <div class="container">
+      <a href="#" class="navbar-brand d-flex align-items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="me-2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        <strong>Album</strong>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section class="py-5 text-center container">
+    <div class="row py-lg-5">
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="fw-light">SIMULADOR DE REDES DE ORDENADORES EN REALIDAD EXTENDIDA</h1>
+        <p class="lead text-body-secondary">En este Trabajo Fin de Grado se muestra una forma novedosa para visualizar redes de ordenadores de otra maneras, utilizando realidad virtual. Este simulador permite ver la evolucion de ´
+          como los paquetes se mueven en la red a lo largo del tiempo, en la que cualquier usuario puede
+          interactuar con la red de una manera facil, intuitiva y visualmente rica. </p>
         <p>
-            El proyecto tiene como objetivo principal representar visualmente y de manera interactiva
-            el proceso de envio de paquetes en un entorno de Realidad Virtual.
-            <br>
-            Para ello se utilizara el entorno de trabajo A-Frame, el cual nos permite desarollar un entorno 
-            inmersivo que permita a los ususarios experimentar y comprender los distintos pasos y elementos 
-            involucrados en el envio y recepción de paquetes.
+          <a href="https://enriqueestebaranz.github.io/EnriqueEstebaranz/Sprint7/Ping/" class="btn btn-primary my-2">Demo Ping</a>
+          <a href="https://enriqueestebaranz.github.io/EnriqueEstebaranz/Sprint7/Traceroute/" class="btn btn-primary my-2">Demo Traceroute</a>
         </p>
-        <h3>Se debe realizar los siguientes puntos</h3>
-        <p id = "sub-descripcion">
-            1. Diseñar un entorno virtual tridimensional que simule un entorno  similar a la visualización gráfica que hace Netgui 
-            del escenario.
-            <br>
-            2. Implementar elementos interactivos que representen los diferentes componentes del proceso de envío, como paquetes, 
-            routers, hubs, PCs, etc.
-            <br>
-            3. Permitir al usuario interactuar con los objetos del entorno, como pausar y reproducri, seguir rutas de 
-            envío, y observar el movimiento y la entrega de paquetes.
-            <br>
-            4. Integrar elementos visuales y auditivos para mejorar la inmersión y la comprensión del proceso.Esto puede ser con la generación de una estela para
-            remarcar la ruta realizada por los paquetes y de sonido a la hora de llegar al destino deseado.
-            <br>
-            5. Evaluar la efectividad y la usabilidad del entorno mediante pruebas con usuarios, recopilando retroalimentación y 
-            realizando ajustes según sea necesario.
-        </p>
-        <h1>
-            Contexto y justificación del trabajo
-        </h1>
-        <p id = "contexto">
-            La razón fundamental detras de este proyecto es simplififcar la comprensión del complejo proceso de envio de paquetes en redes. A menudo entender como 
-            se mueven los paquetes en una red puede resultare desafiante, especialmente para aquellos que están aprendiendo sobre el tema. Este TFG busca abordar 
-            esta dificultad al proporcionar una experiencia en realidad virtual que facilita la compresión del proceso técnico.
-            <br>
-            Al aprovechar las capacidades de la realidad virtual que nos brinda el framework A-Frame, se busca ofrecer una representación visual y dinámica del 
-            proceso de envio de paquetes. Permitiendo a los usuarios interactuar con el entorno y observar el viaje que atraviesan los paquetes a traves de la red, 
-            desde su origen hasta su destino, mediante la visualización de un mapa de entorno de red y la representación del movimiento de los paquetes en tiempo real.
-            <br>
-            El proposito presencial del Trabajo Fin de Grado es crear una "herramienta educativa" que mejore la compresión del proceso de envío de paquetes en redes de 
-            computadoras utilizando la realidad virtual como medio para facilitar el aprendizaje y entendimiento del tema técnico.
-
-        </p>
+      </div>
     </div>
+  </section>
 
+  <div class="album py-5 bg-body-tertiary">
+    <div class="container">
 
-    <section>
-        <iframe src="Paginas/Pagina1.html" name="contenido" id="contenido"></iframe>
-    </section>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="col">
+          <div class="card shadow-sm">
+            <img src="https://github.com/EnriqueEstebaranz/EnriqueEstebaranz/blob/main/imagenes/github.jpg?raw=true" class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/></svg>
+            <div class="card-body">
+              <h1 align ="center">Repositorio GitHub</h1>
+              <p class="card-text">Haga clic aquí para acceder al repositorio de GitHub donde se almacena todo el código.</p><br>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="https://enriqueestebaranz.github.io/EnriqueEstebaranz/Memoria-TFG.pdf" class="btn btn-sm btn-outline-secondary">PDF</a>
+                  <a href="https://enriqueestebaranz.github.io/EnriqueEstebaranz/Memoria-TFG.pdf" class="btn btn-sm btn-outline-secondary">PDF</a>
+                </div>
 
-    <script src="script.js"></script>
-</body>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm">
+            <img src="https://github.com/EnriqueEstebaranz/EnriqueEstebaranz/blob/main/imagenes/pdf1.jpg?raw=true" class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em"></text></svg>
+            <div class="card-body">
+              <h1 align ="center">Memoría TFG</h1>
+              <p class="card-text">
+                Haz clic aquí para acceder al trabajo de fin de grado y conocer más al respecto.</p>
+                <br>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="https://enriqueestebaranz.github.io/EnriqueEstebaranz/Memoria-TFG.pdf" class="btn btn-sm btn-outline-secondary">PDF</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm">
+            <img src="https://github.com/EnriqueEstebaranz/EnriqueEstebaranz/blob/main/imagenes/pdf1.jpg?raw=true" class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em"></text></svg>
+            <div class="card-body">
+              <h1 align ="center">Presentación TFG</h1>
+              <p class="card-text">Haz clic aqui para acceder a la presentación.</p><br><br>
+              <div class="d-flex justify-content-between align-items-center">
+                
+                <div class="btn-group">
+                  <a href="https://enriqueestebaranz.github.io/EnriqueEstebaranz/Sprint1/CambiaAspecto/" class="btn btn-sm btn-outline-secondary">PDF</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+        <div><H1 font-size="large" align="center">Desarrollo del Proyecto</H1></div>
+        <div></div>
+        <div class="col">
+          <div class="card shadow-sm">
+            <img src="https://github.com/EnriqueEstebaranz/EnriqueEstebaranz/blob/main/imagenes/sprint1-web.png?raw=true" class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/></svg>
+            <div class="card-body">
+              <h1 align ="center">Sprint1 : Primer contacto</h1>
+              <p class="card-text">Este Sprint es la primera toma de contacto con A-Frame fundamental para el desarrollo del
+                proyecto. </p>
+                <br>
+
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="https://enriqueestebaranz.github.io/EnriqueEstebaranz/Sprint1/CambiaAspecto/" class="btn btn-sm btn-outline-secondary">Cambia Aspecto</a>
+                  <a href="https://enriqueestebaranz.github.io/EnriqueEstebaranz/Sprint1/CubosARojo/" class="btn btn-sm btn-outline-secondary">Cubos a Rojo</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm">
+            <img src="https://github.com/EnriqueEstebaranz/EnriqueEstebaranz/blob/main/imagenes/sprint2-web.png?raw=true" class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/></svg>
+            <div class="card-body">
+              <h1 align ="center">Sprint2: Trabajo con animaciones</h1>
+              <p class="card-text">Esta etapa forma parte de la formacion con A-Frame pero ya con vistas a una idea de lo que va a necesitar el proyecto.</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="https://enriqueestebaranz.github.io/EnriqueEstebaranz/Sprint2/Animacion/" class="btn btn-sm btn-outline-secondary">Animación</a>
+                  <a href="https://enriqueestebaranz.github.io/EnriqueEstebaranz/Sprint2/PaquetesIdaVuelta/" class="btn btn-sm btn-outline-secondary">Paquetes Ida y Vuelta</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm">
+            <img src="https://github.com/EnriqueEstebaranz/EnriqueEstebaranz/blob/main/imagenes/Sprint3-web.png?raw=true" class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/></svg>
+            <div class="card-body">
+              <h1 align ="center">Sprint3: Comienzo del proyecto</h1>
+              <p class="card-text">Se trata el proceso realizado para representar el archivo “netgui.nkp” que nos proporciona la herramienta NetGUI en una escena de A-Frame.</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="https://enriqueestebaranz.github.io/EnriqueEstebaranz/Sprint3/SimuladorNetGUI/" class="btn btn-sm btn-outline-secondary">Simulador NetGUI</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card shadow-sm">
+            <img src="https://github.com/EnriqueEstebaranz/EnriqueEstebaranz/blob/main/imagenes/sprint4-web.png?raw=true" class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/></svg>
+            <div class="card-body">
+              <h1 align ="center">Sprint4: Creación de paquetes y puesta en movimiento</h1>
+              <p class="card-text">En este sprint se implementan unos paquetes que realizan unas rutas dentro de la red.</p><br><br><br>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="https://enriqueestebaranz.github.io/EnriqueEstebaranz/Sprint4/EnvioPaquetes" class="btn btn-sm btn-outline-secondary">Envio Paquetes</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm">
+            <img src="https://github.com/EnriqueEstebaranz/EnriqueEstebaranz/blob/main/imagenes/sprint5-web.png?raw=true" class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/></svg>
+            <div class="card-body">
+              <h1 align ="center">Sprint5: Implementación de historial y mejora visual</h1>
+              <p class="card-text">A lo largo del sprint se implementa un historial en la simulacion de redes de ordenadores en realidad virtual que tenemos.</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="https://enriqueestebaranz.github.io/EnriqueEstebaranz/Sprint5/Version-Inicial/" class="btn btn-sm btn-outline-secondary">Versión Inicial</a>
+                  <a href="https://enriqueestebaranz.github.io/EnriqueEstebaranz/Sprint5/version-mejorada/" class="btn btn-sm btn-outline-secondary">Versión Mejorada</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm">
+            <img src="https://github.com/EnriqueEstebaranz/EnriqueEstebaranz/blob/main/imagenes/sprint6-web.png?raw=true" class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/></svg>
+            <div class="card-body">
+              <h1 align ="center">Sprint6: Interactividad con la simulación</h1>
+              <p class="card-text">Se le agrega interactividad al simulador y mejora la gestión del historial.</p><br><br><br>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="https://enriqueestebaranz.github.io/EnriqueEstebaranz/Sprint6/SimuladorControlado/" class="btn btn-sm btn-outline-secondary">Simulador Controlado</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+        <div class="col">
+          <div class="card shadow-sm">
+            <img src="https://github.com/EnriqueEstebaranz/EnriqueEstebaranz/blob/main/imagenes/sprint1-web.png?raw=true" class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/></svg>
+            <div class="card-body">
+              <h1 align ="center">Sprint7: Creación de escenario final</h1>
+              <p class="card-text">Se pone apunto el simulador y se crean las demos.</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="https://enriqueestebaranz.github.io/EnriqueEstebaranz/Sprint2/Animacion/" class="btn btn-sm btn-outline-secondary">Animación</a>
+                  <a href="https://enriqueestebaranz.github.io/EnriqueEstebaranz/Sprint2/PaquetesIdaVuelta/" class="btn btn-sm btn-outline-secondary">Paquetes Ida y Vuelta</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="text-body-secondary py-5">
+  <div class="container">
+    <p class="float-end mb-1">
+      <a href="#">Back to top</a>
+    </p>
+    <p class="mb-1">Trabajo Fin de Grado de Enrique Estebaranz Redondo</p>
+    <p class="mb-0">Copyright © Enrique Estebaranz Redondo - EnriqueEstebaranzRedondo.</p>
+  </div>
+</footer>
+<script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+
+    </body>
 </html>
