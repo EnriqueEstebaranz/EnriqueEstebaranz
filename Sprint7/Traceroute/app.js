@@ -368,7 +368,7 @@ AFRAME.registerComponent('direcciones',{
 AFRAME.registerComponent('difuminado',{
     schema: {
         tiempo: {type: "number", default:4000},
-        opacidad: {type: "number", default:0.4}
+        opacidad: {type: "number", default:0.9}
     },
     init: function () {
         this.el.setAttribute('animation__fadeout', {
