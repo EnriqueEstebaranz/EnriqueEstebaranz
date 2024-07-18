@@ -41,7 +41,7 @@ AFRAME.registerComponent('nombre-en-plano', {
         grupo.appendChild(texto);
 
         // Configurar el grupo para mirar siempre a la cámara
-        grupo.setAttribute('look-at', '[camera]');
+        grupo.setAttribute('look-at', '"#camara"');
 
         // Establecer la posición del grupo, asegurando que esté en la posición pasada a la función
         grupo.object3D.position.set(this.data.x - 1, this.data.y + 2, this.data.z);
