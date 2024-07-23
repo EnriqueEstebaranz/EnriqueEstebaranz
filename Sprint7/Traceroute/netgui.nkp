@@ -4,17 +4,6 @@ position(219.0,532.0); NKCompaq("pc2")
 position(429.0,343.0); NKRouter("r1")
 position(326.0,264.0); NKHub("hub1")
 position(357.0,491.0); NKHub("hub2")
-position(649.0,208.0); NKRouter("r2")
-position(683.0,465.0); NKRouter("r3")
-position(882.0,335.0); NKRouter("r4")
-position(521.0,113.0); NKHub("hub3")
-position(608.0,579.0); NKHub("hub4")
-position(1066.0,435.0); NKHub("hub5")
-position(1069.0,219.0); NKHub("hub6")
-position(714.0,63.0); NKCompaq("pc3")
-position(733.0,645.0); NKCompaq("pc4")
-position(1175.0,544.0); NKCompaq("pc5")
-position(1212.0,78.0); NKCompaq("pc6")
 <\nodes>
 <connections>
 <link>
@@ -29,56 +18,9 @@ To("r1")
 Connect("r1")
 To("hub2")
 <\link>
-<link>
-Connect("hub2")
-To("pc2")
-<\link>
-<link>
-Connect("hub4")
-To("r3")
-<\link>
-<link>
-Connect("r3")
-To("r1")
-<\link>
-<link>
-Connect("r1")
-To("r2")
-<\link>
-<link>
-Connect("r2")
-To("r4")
-<\link>
-<link>
-Connect("r3")
-To("r4")
-<\link>
-<link>
-Connect("r4")
-To("hub6")
-<\link>
-<link>
-Connect("r4")
-To("hub5")
-<\link>
-<link>
-Connect("hub6")
-To("pc6")
-<\link>
-<link>
-Connect("hub5")
-To("pc5")
-<\link>
-<link>
-Connect("r2")
-To("hub3")
-<\link>
-<link>
-Connect("hub3")
-To("pc3")
-<\link>
-<link>
-Connect("hub4")
-To("pc4")
-<\link>
 <\connections>
+
+
+
+
+

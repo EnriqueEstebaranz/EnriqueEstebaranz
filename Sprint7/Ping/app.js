@@ -368,7 +368,7 @@ AFRAME.registerComponent('direcciones',{
 AFRAME.registerComponent('difuminado',{
     schema: {
         tiempo: {type: "number", default:4000},
-        opacidad: {type: "number", default:0.4}
+        opacidad: {type: "number", default:0.9}
     },
     init: function () {
         this.el.setAttribute('animation__fadeout', {
@@ -505,6 +505,7 @@ AFRAME.registerComponent("envio-paquetes", {
         const movimiento = (i) => {
             if (i >= paquete.route.length) {
                 const destino = document.getElementById(paquete.route[i - 1]);
+                console.log("aqui esta el valor:" + destino )
                 if (destino){
                     const  sonido = document.querySelector('#BotonSonido');
                     if(sonido.components['sonido'].getState() == "sonando"){
@@ -696,8 +697,10 @@ AFRAME.registerComponent("simulacro",{
                     entidad.setAttribute("material", {src: "#hub", side: "double"});
                     entidad.setAttribute("id", node.name)
                     entidad.setAttribute('trazador', {forma: 'hub', intervalo: 1000});
-                    entidad.setAttribute('direcciones','');
+                    entidad.setAttribute('paquetes-enviados', ''); // Añadir el componente paquetes-enviados
                     entidad.setAttribute('nombre-en-plano', {nombre: node.name,x: node.position[0],y: 0,z: node.position[1]});
+                    entidad.setAttribute('direcciones','');
+
                     escenario.appendChild(entidad);
                 } else if (node.type.includes("NKRouter")){
                     const entidad = document.createElement('a-entity');
@@ -706,6 +709,7 @@ AFRAME.registerComponent("simulacro",{
                     entidad.setAttribute('material', { color: "#808080" });
                     entidad.setAttribute("id", node.name)
                     entidad.setAttribute('trazador', {forma: 'router', intervalo: 1000});
+                    entidad.setAttribute('paquetes-enviados', ''); // Añadir el componente paquetes-enviados
                     entidad.setAttribute('direcciones','');
                     entidad.setAttribute('nombre-en-plano', {nombre: node.name,x: node.position[0],y: 0,z: node.position[1]});
                     escenario.appendChild(entidad);
@@ -716,6 +720,7 @@ AFRAME.registerComponent("simulacro",{
                     entidad.setAttribute("material", {src: "#switch", side: "double"});
                     entidad.setAttribute("id", node.name)
                     entidad.setAttribute('trazador', {forma: 'switch', intervalo: 1000});
+                    entidad.setAttribute('paquetes-enviados', ''); // Añadir el componente paquetes-enviados
                     entidad.setAttribute('direcciones','');
                     entidad.setAttribute('nombre-en-plano', {nombre: node.name,x: node.position[0],y: 0,z: node.position[1]});
                     escenario.appendChild(entidad); 

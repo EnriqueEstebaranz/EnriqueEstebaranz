@@ -1,85 +1,80 @@
 <nodes>
-position(449.0,154.0); NKHub("hub2")
-position(171.0,198.0); NKHub("hub1")
-position(53.0,346.0); NKHub("hub4")
-position(675.0,296.0); NKHub("hub3")
-position(780.0,401.0); NKHub("hub5")
-position(58.0,485.0); NKCompaq("pc1")
-position(655.0,180.0); NKRouter("r3")
-position(820.0,219.0); NKCompaq("dnsnet")
-position(5.0,117.0); NKCompaq("dnscom")
-position(237.0,299.0); NKRouter("r1")
-position(341.0,224.0); NKRouter("r2")
-position(630.0,381.0); NKRouter("r4")
-position(628.0,536.0); NKCompaq("pc2")
-position(809.0,534.0); NKCompaq("dnsemp2")
-position(202.0,480.0); NKCompaq("dnsemp1")
-position(315.7491584544007,53.25747062210026); NKCompaq("dnsroot2")
-position(560.8754207727998,42.20265163060037); NKCompaq("dnsroot1")
+position(131.0,302.0); NKCompaq("pc2")
+position(390.0,138.0); NKRouter("r1")
+position(113.0,79.0); NKCompaq("pc1")
+position(244.0,100.0); NKHub("hub1")
+position(249.0,329.0); NKHub("hub2")
+position(608.0,219.0); NKRouter("r")
+position(818.0,103.0); NKRouter("r3")
+position(840.0,333.0); NKRouter("r4")
+position(1043.0,74.0); NKHub("hub3")
+position(1027.0,333.0); NKHub("hub4")
+position(384.0,337.0); NKRouter("r2")
+position(650.0,359.0); NKRouter("r5")
+position(1195.0,44.0); NKCompaq("pc3")
+position(1193.0,304.0); NKCompaq("pc4")
+position(335.0,445.0); NKCompaq("pc5")
+position(521.0,398.0); NKHub("hub6")
 <\nodes>
 <connections>
 <link>
-Connect("dnscom")
+Connect("pc1")
 To("hub1")
 <\link>
 <link>
-Connect("hub1")
-To("r1")
-<\link>
-<link>
-Connect("hub1")
-To("r2")
-<\link>
-<link>
 Connect("r1")
-To("hub4")
-<\link>
-<link>
-Connect("hub4")
-To("pc1")
-<\link>
-<link>
-Connect("hub4")
-To("dnsemp1")
+To("hub1")
 <\link>
 <link>
 Connect("r2")
 To("hub2")
 <\link>
 <link>
-Connect("r3")
-To("hub2")
-<\link>
-<link>
-Connect("r3")
-To("hub3")
-<\link>
-<link>
-Connect("hub3")
-To("r4")
-<\link>
-<link>
-Connect("dnsnet")
-To("hub3")
-<\link>
-<link>
-Connect("hub5")
+Connect("hub2")
 To("pc2")
 <\link>
 <link>
-Connect("hub5")
-To("dnsemp2")
+Connect("r2")
+To("r")
 <\link>
 <link>
-Connect("hub5")
+Connect("r1")
+To("r")
+<\link>
+<link>
+Connect("r")
+To("r3")
+<\link>
+<link>
+Connect("r")
 To("r4")
 <\link>
 <link>
-Connect("dnsroot2")
-To("hub2")
+Connect("r")
+To("r5")
 <\link>
 <link>
-Connect("hub2")
-To("dnsroot1")
+Connect("r3")
+To("hub3")
+<\link>
+<link>
+Connect("r4")
+To("hub4")
+<\link>
+<link>
+Connect("r5")
+To("hub6")
+<\link>
+<link>
+Connect("hub6")
+To("pc5")
+<\link>
+<link>
+Connect("hub4")
+To("pc4")
+<\link>
+<link>
+Connect("hub3")
+To("pc3")
 <\link>
 <\connections>

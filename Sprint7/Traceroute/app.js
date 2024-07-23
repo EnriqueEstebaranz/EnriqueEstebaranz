@@ -205,6 +205,8 @@ AFRAME.registerComponent("mostrar-historial", {
             entidades.forEach(entidad => {
                 entidad.setAttribute('visible', 'true');
             });
+
+            this.paquetesClicados.length = 0;
         });
     }
 });

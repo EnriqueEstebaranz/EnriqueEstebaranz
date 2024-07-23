@@ -2,171 +2,143 @@
   "nodes": [
     {
       "position": [
-        -2.5500000000000007,
-        -17.3
-      ],
-      "type": "NKHub",
-      "name": "hub2"
-    },
-    {
-      "position": [
-        -16.45,
-        -15.1
-      ],
-      "type": "NKHub",
-      "name": "hub1"
-    },
-    {
-      "position": [
-        -22.35,
-        -7.699999999999999
-      ],
-      "type": "NKHub",
-      "name": "hub4"
-    },
-    {
-      "position": [
-        8.75,
-        -10.2
-      ],
-      "type": "NKHub",
-      "name": "hub3"
-    },
-    {
-      "position": [
-        14.0,
-        -4.949999999999999
-      ],
-      "type": "NKHub",
-      "name": "hub5"
-    },
-    {
-      "position": [
-        -22.1,
-        -0.75
-      ],
-      "type": "NKCompaq",
-      "name": "pc1"
-    },
-    {
-      "position": [
-        7.75,
-        -16.0
-      ],
-      "type": "NKRouter",
-      "name": "r3"
-    },
-    {
-      "position": [
-        16.0,
-        -14.05
-      ],
-      "type": "NKCompaq",
-      "name": "dnsnet"
-    },
-    {
-      "position": [
-        -24.75,
-        -19.15
-      ],
-      "type": "NKCompaq",
-      "name": "dnscom"
-    },
-    {
-      "position": [
-        -13.15,
-        -10.05
-      ],
-      "type": "NKRouter",
-      "name": "r1"
-    },
-    {
-      "position": [
-        -7.949999999999999,
-        -13.8
-      ],
-      "type": "NKRouter",
-      "name": "r2"
-    },
-    {
-      "position": [
-        6.5,
-        -5.949999999999999
-      ],
-      "type": "NKRouter",
-      "name": "r4"
-    },
-    {
-      "position": [
-        6.399999999999999,
-        1.8000000000000007
+        -18.45,
+        -9.9
       ],
       "type": "NKCompaq",
       "name": "pc2"
     },
     {
       "position": [
-        15.450000000000003,
-        1.6999999999999993
+        -5.5,
+        -18.1
       ],
-      "type": "NKCompaq",
-      "name": "dnsemp2"
+      "type": "NKRouter",
+      "name": "r1"
     },
     {
       "position": [
-        -14.9,
-        -1.0
+        -19.35,
+        -21.05
       ],
       "type": "NKCompaq",
-      "name": "dnsemp1"
+      "name": "pc1"
     },
     {
       "position": [
-        -9.212542077279966,
-        -22.337126468894986
+        -12.8,
+        -20.0
       ],
-      "type": "NKCompaq",
-      "name": "dnsroot2"
+      "type": "NKHub",
+      "name": "hub1"
     },
     {
       "position": [
-        3.0437710386399885,
-        -22.889867418469983
+        -12.55,
+        -8.55
+      ],
+      "type": "NKHub",
+      "name": "hub2"
+    },
+    {
+      "position": [
+        5.399999999999999,
+        -14.05
+      ],
+      "type": "NKRouter",
+      "name": "r"
+    },
+    {
+      "position": [
+        15.899999999999999,
+        -19.85
+      ],
+      "type": "NKRouter",
+      "name": "r3"
+    },
+    {
+      "position": [
+        17.0,
+        -8.350000000000001
+      ],
+      "type": "NKRouter",
+      "name": "r4"
+    },
+    {
+      "position": [
+        27.15,
+        -21.3
+      ],
+      "type": "NKHub",
+      "name": "hub3"
+    },
+    {
+      "position": [
+        26.35,
+        -8.350000000000001
+      ],
+      "type": "NKHub",
+      "name": "hub4"
+    },
+    {
+      "position": [
+        -5.800000000000001,
+        -8.149999999999999
+      ],
+      "type": "NKRouter",
+      "name": "r2"
+    },
+    {
+      "position": [
+        7.5,
+        -7.050000000000001
+      ],
+      "type": "NKRouter",
+      "name": "r5"
+    },
+    {
+      "position": [
+        34.75,
+        -22.8
       ],
       "type": "NKCompaq",
-      "name": "dnsroot1"
+      "name": "pc3"
+    },
+    {
+      "position": [
+        34.65,
+        -9.8
+      ],
+      "type": "NKCompaq",
+      "name": "pc4"
+    },
+    {
+      "position": [
+        -8.25,
+        -2.75
+      ],
+      "type": "NKCompaq",
+      "name": "pc5"
+    },
+    {
+      "position": [
+        1.0500000000000007,
+        -5.100000000000001
+      ],
+      "type": "NKHub",
+      "name": "hub6"
     }
   ],
   "connections": [
     {
       "type": "link",
       "from": "hub1",
-      "to": "dnscom"
+      "to": "pc1"
     },
     {
       "type": "link",
-      "from": "r1",
-      "to": "hub1"
-    },
-    {
-      "type": "link",
-      "from": "r2",
-      "to": "hub1"
-    },
-    {
-      "type": "link",
-      "from": "hub4",
+      "from": "hub1",
       "to": "r1"
-    },
-    {
-      "type": "link",
-      "from": "pc1",
-      "to": "hub4"
-    },
-    {
-      "type": "link",
-      "from": "dnsemp1",
-      "to": "hub4"
     },
     {
       "type": "link",
@@ -175,48 +147,63 @@
     },
     {
       "type": "link",
-      "from": "hub2",
-      "to": "r3"
-    },
-    {
-      "type": "link",
-      "from": "hub3",
-      "to": "r3"
-    },
-    {
-      "type": "link",
-      "from": "r4",
-      "to": "hub3"
-    },
-    {
-      "type": "link",
-      "from": "hub3",
-      "to": "dnsnet"
-    },
-    {
-      "type": "link",
       "from": "pc2",
-      "to": "hub5"
+      "to": "hub2"
     },
     {
       "type": "link",
-      "from": "dnsemp2",
-      "to": "hub5"
+      "from": "r",
+      "to": "r2"
+    },
+    {
+      "type": "link",
+      "from": "r",
+      "to": "r1"
+    },
+    {
+      "type": "link",
+      "from": "r3",
+      "to": "r"
     },
     {
       "type": "link",
       "from": "r4",
-      "to": "hub5"
+      "to": "r"
     },
     {
       "type": "link",
-      "from": "hub2",
-      "to": "dnsroot2"
+      "from": "r5",
+      "to": "r"
     },
     {
       "type": "link",
-      "from": "dnsroot1",
-      "to": "hub2"
+      "from": "hub3",
+      "to": "r3"
+    },
+    {
+      "type": "link",
+      "from": "hub4",
+      "to": "r4"
+    },
+    {
+      "type": "link",
+      "from": "hub6",
+      "to": "r5"
+    },
+    {
+      "type": "link",
+      "from": "pc5",
+      "to": "hub6"
+    },
+    {
+      "type": "link",
+      "from": "pc4",
+      "to": "hub4"
+    },
+    {
+      "type": "link",
+      "from": "pc3",
+      "to": "hub3"
     }
   ]
 }
