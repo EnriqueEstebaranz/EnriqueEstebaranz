@@ -6,40 +6,51 @@ let totalPaquetesEnviados = 0;
 let totalPaquetes = 0;
 let conexionesPorNodo = []
 let durDefecto = 2000;
-function crearNombreEnPlano(nombre, x, y, z) {
-    // Acceder al elemento de la escena de A-Frame
-    const scene = document.querySelector('a-scene');
 
-    // Crear una entidad grupo para contener el texto y el plano
-    const grupo = document.createElement('a-entity');
+AFRAME.registerComponent('nombre-en-plano', {
+    schema: {
+        nombre: { type: 'string', default: '' }, // Nombre a mostrar en el plano
+        x: { type: 'number', default: 0 }, // Posición en el eje X
+        y: { type: 'number', default: 0 }, // Posición en el eje Y
+        z: { type: 'number', default: 0 }  // Posición en el eje Z
+    },
 
-    // Crear el plano de fondo
-    const plano = document.createElement('a-plane');
-    plano.setAttribute('color', 'black');
-    plano.setAttribute('height', '1');
-    plano.setAttribute('width', nombre.length * 0.5); // Ajustar ancho basado en la longitud del nombre
-    plano.setAttribute('position', '0 0 0'); // Centro del grupo
+    init: function () {
+        // Acceder al elemento de la escena de A-Frame
+        const scene = document.querySelector('a-scene');
 
-    // Crear el texto
-    const texto = document.createElement('a-text');
-    texto.setAttribute('value', nombre);
-    texto.setAttribute('color', 'white');
-    texto.setAttribute('align', 'center');
-    texto.setAttribute('position', '0 0 0.1'); // Ligeramente en frente del plano para evitar z-fighting
+        // Crear una entidad grupo para contener el texto y el plano
+        const grupo = document.createElement('a-entity');
 
-    // Añadir texto y plano al grupo
-    grupo.appendChild(plano);
-    grupo.appendChild(texto);
+        // Crear el plano de fondo
+        const plano = document.createElement('a-plane');
+        plano.setAttribute('color', 'black');
+        plano.setAttribute('height', '1');
+        plano.setAttribute('width', this.data.nombre.length * 0.5); // Ajustar ancho basado en la longitud del nombre
+        plano.setAttribute('position', '0 0 0'); // Centro del grupo
 
-    // Configurar el grupo para mirar siempre a la cámara
-    grupo.setAttribute('look-at', '[camera]');
+        // Crear el texto
+        const texto = document.createElement('a-text');
+        texto.setAttribute('value', this.data.nombre);
+        texto.setAttribute('color', 'white');
+        texto.setAttribute('align', 'center');
+        texto.setAttribute('position', '0 0 0.1'); // Ligeramente en frente del plano para evitar z-fighting
 
-    // Establecer la posición del grupo, asegurando que esté en la posición pasada a la función
-    grupo.object3D.position.set(x-1, y+2, z);
+        // Añadir texto y plano al grupo
+        grupo.appendChild(plano);
+        grupo.appendChild(texto);
 
-    // Añadir el grupo a la escena
-    scene.appendChild(grupo);
-}
+        // Configurar el grupo para mirar siempre a la cámara
+        grupo.setAttribute('look-at', "#camara");
+
+        // Establecer la posición del grupo, asegurando que esté en la posición pasada a la función
+        grupo.object3D.position.set(this.data.x - 1, this.data.y + 2, this.data.z);
+
+        // Añadir el grupo a la escena
+        scene.appendChild(grupo);
+    }
+});
+
 function crearCuadroNombrePaquete(nombre, origen, destino, paquete) {
     const grupo = document.createElement('a-entity');
     const plano = document.createElement('a-plane');
@@ -121,28 +132,40 @@ AFRAME.registerComponent('movement-restrictor', {
 
 
 AFRAME.registerComponent("mostrar-historial", {
+    paquetesClicados : [],
     init: function() {
         this.el.addEventListener("click", () => {
+
             this.mostrar()
             this.botonAtras()
         });
     },
     mostrar:function(){
+
         // Primero para la simulación porque nos centramos en el trayectod e un paquete ya realizado.
         const  componentePR = document.querySelector('#Boton-Pausa-Reanudar');
         if (componentePR){
             if(componentePR.components['pausa-reproducir'].getState()!== "pausa"){
                 componentePR.components['pausa-reproducir'].setPause()
             }
-            
         }
 
-        
-        const identificador =this.el.getAttribute("id");
-        // Hacer invisibles todas las entidades con difuminado excepto el paquete seleccionado
+        const identificador = this.el.getAttribute("id");
+        const index = this.paquetesClicados.indexOf(identificador);
+        if (index > -1) {
+            // Eliminar si ya está seleccionado
+            this.paquetesClicados.splice(index, 1);
+        } else {
+            // Agregar si no está seleccionado
+            this.paquetesClicados.push(identificador);
+        }
+        console.log("salida"+this.paquetesClicados)
+        // Hacer invisibles todas las entidades con difuminado excepto los paquetes seleccionado
         const entidades = document.querySelectorAll('[difuminado]');
         entidades.forEach(entidad => {
-            if ((entidad.getAttribute('id') !== identificador)  && (entidad.getAttribute('id') !== "guia") ) {
+            if (this.paquetesClicados.includes(entidad.getAttribute('id') )  || (entidad.getAttribute('id') == "guia") ) {
+                entidad.setAttribute('visible', 'true');
+            } else {
                 entidad.setAttribute('visible', 'false');
             }
         });
@@ -152,6 +175,7 @@ AFRAME.registerComponent("mostrar-historial", {
         }else{
             componentePR.removeAttribute('geometry');
         }
+
     },
     botonAtras:function(){
         const camara = document.querySelector("#camara");
@@ -163,7 +187,12 @@ AFRAME.registerComponent("mostrar-historial", {
         camara.appendChild(botonVuelta);
         botonVuelta.addEventListener('click', () => {
             // Elimino Boton
-            botonVuelta.parentNode.removeChild(botonVuelta);
+            const botonesVuelta = document.querySelectorAll("#Vuelta-Atras");
+            botonesVuelta.forEach(boton => {
+                if (boton.parentNode) {
+                    boton.parentNode.removeChild(boton);
+                }
+            });
             
             const componentePR = document.querySelector('[pausa-reproducir]');
             if (componentePR) {
@@ -176,9 +205,11 @@ AFRAME.registerComponent("mostrar-historial", {
             entidades.forEach(entidad => {
                 entidad.setAttribute('visible', 'true');
             });
+
+            this.paquetesClicados.length = 0;
         });
     }
-})
+});
 
 AFRAME.registerComponent("pausa-reproducir", {
     init: function() {
@@ -210,8 +241,6 @@ AFRAME.registerComponent("pausa-reproducir", {
         this.el.setAttribute("material", {src: "#pausa"});
         // Asegurarse de que el componente envio-paquetes existe
         const envioEntity = document.querySelector('[envio-paquetes]');
-        const botonreproducir = document.querySelectorAll('[reproducir]');
-        const botonpausar = document.querySelectorAll('[pausa]');
         document.querySelectorAll("[animation]").forEach((element) => {
             element.emit('animation-resume');
         });
@@ -225,17 +254,15 @@ AFRAME.registerComponent("pausa-reproducir", {
         historialEntidad.components['historial'].reanuda();
 
     },
-    finalSimulación:function(){
+    finalSimulacion:function(){
         this.setPause(); // Forzar la pausa
         const boton = document.querySelector('[pausa-reproducir]')
         boton.parentNode.removeChild(boton);
         crearCuadroFin()
-
     },
     getState: function() {
         return this.state;
     }
-
 });
 
 
@@ -245,7 +272,37 @@ AFRAME.registerComponent("reinicio", {
             location.reload();
         });
     },
+    
 });
+
+AFRAME.registerComponent('sonido', {
+
+    init: function () {
+        
+        this.state ='sonando'
+        this.el.addEventListener('click', () => {
+            if (this.state ==='sonando') {
+                this.setMuted()
+            } else {
+                this.setSound()
+            }
+        });
+    },
+    setSound:function() {
+        this.state ='sonando'
+        const botonSonido = document.querySelector('[sonido]');
+        botonSonido.setAttribute("material", {src: "#sonando"});
+    },
+    setMuted:function() {
+        this.state ='muteado'
+        const botonSonido = document.querySelector('[sonido]');
+        botonSonido.setAttribute("material", {src: "#silencio"});
+    },
+    getState: function() {
+        return this.state;
+    }
+});
+
 
 AFRAME.registerComponent('paquetes-enviados', {
     schema: {
@@ -258,13 +315,12 @@ AFRAME.registerComponent('paquetes-enviados', {
       // Calcular la posición para el nuevo paquete en la pila
       const posicionBase = this.el.object3D.position;
       const nuevaAltura = (this.pila.length + 1) * this.data.alturaPaquete;
-      
       paquete.setAttribute('position', `${posicionBase.x + 2} ${nuevaAltura} ${posicionBase.z+ 2}`);
       this.pila.push(paquete);
     }
 });
 
-// Click y muestro conexiones
+
 AFRAME.registerComponent('direcciones',{
     init: function(){
         this.el.addEventListener("click", () => {
@@ -314,7 +370,7 @@ AFRAME.registerComponent('direcciones',{
 AFRAME.registerComponent('difuminado',{
     schema: {
         tiempo: {type: "number", default:4000},
-        opacidad: {type: "number", default:0.4}
+        opacidad: {type: "number", default:0.9}
     },
     init: function () {
         this.el.setAttribute('animation__fadeout', {
@@ -388,7 +444,7 @@ AFRAME.registerComponent("envio-paquetes", {
     almacenTimeouts: [], // Almacenamiento de timeouts
     pausa: false, 
     init: function() {
-        this.escenario = document.querySelector("[escenario]");  // Asegurarse de que el escenario está definido
+        this.escenario = document.querySelector("#escenario");  // Asegurarse de que el escenario está definido
         this.envioPaquetes();
     },
 
@@ -399,20 +455,24 @@ AFRAME.registerComponent("envio-paquetes", {
             // Numero total de paquetes que se van a enviar en la simulación
             totalPaquetes = json.packages.length;
             json.packages.forEach(paquete => {
-                const delay = paquete.time * 1000;
                 const identificador = paquete.id
                 const duracion = paquete.duracion
+                
+                const delay = paquete.time * 1000;
                 const timeout = setTimeout(() => {
                     if (!this.pausa) {
                         numeroPaquetes++
                         this.animacion(paquete, identificador, duracion);  
                     }
-                    
                     // Elimina el timeout del almacen después de ejecutarse
                     this.almacenTimeouts = this.almacenTimeouts.filter(t => t.id !== timeout);
                 }, delay);
-                this.almacenTimeouts.push({ id: timeout, package: paquete, delay: delay, startTime: Date.now(), remainingTime: delay, idpaquete: identificador, durpaquete:duracion});
+                   
+            this.almacenTimeouts.push({ id: timeout, package: paquete, delay: delay, startTime: Date.now(), 
+                                            remainingTime: delay, idpaquete: identificador, durpaquete:duracion});
+            
             })
+            
         })
         .catch(error => console.error('Error loading packages.json:', error));
     },
@@ -423,8 +483,7 @@ AFRAME.registerComponent("envio-paquetes", {
             return;
         }
         if (id == ""){
-            id = "paquete" + numeroPaquetes
-            console.log(id)
+            id = "Paquete " + numeroPaquetes
         }
         if (duracion == ""){
             duracion = durDefecto;
@@ -439,9 +498,8 @@ AFRAME.registerComponent("envio-paquetes", {
         pqt.object3D.position.copy(salida.object3D.position);
         pqt.setAttribute('id', id)
 
-        
-        const destinoFinal = paquete.route[paquete.route.length - 1]; 
         const origen = paquete.route[0]; 
+        const destinoFinal = paquete.route[paquete.route.length - 1]; 
         crearCuadroNombrePaquete(id, origen, destinoFinal, pqt);
 
         pqt.setAttribute('trazador', {forma: 'esfera', intervalo: 30});
@@ -449,21 +507,27 @@ AFRAME.registerComponent("envio-paquetes", {
         const movimiento = (i) => {
             if (i >= paquete.route.length) {
                 const destino = document.getElementById(paquete.route[i - 1]);
+                console.log("aqui esta el valor:" + destino )
                 if (destino){
+                    const  sonido = document.querySelector('#BotonSonido');
+                    if(sonido.components['sonido'].getState() == "sonando"){
+                        const sonar = document.getElementById('logrado');
+                        sonar.components.sound.playSound();
+                    }
+                    
                     destino.components['paquetes-enviados'].agregarPaquete(pqt);
                     pqt.removeAttribute('trazador')
                     totalPaquetesEnviados +=1
                 }else{
-                    console.log("No existe el nodos destino")
+                    console.log("No existe el nodo destino")
                 }
                 if (totalPaquetesEnviados == totalPaquetes){
                     setTimeout(()=>{
                         const componentePR = document.querySelector('#Boton-Pausa-Reanudar');
-                        componentePR.components['pausa-reproducir'].finalSimulación()
+                        componentePR.components['pausa-reproducir'].finalSimulacion()
                         console.log("puesse ha finalizado la simulación")
                     },2000)
                 }
-                
                 liberarColor(color);
                 return;
             }
@@ -486,20 +550,17 @@ AFRAME.registerComponent("envio-paquetes", {
         this.pausa = true;
         this.almacenTimeouts = this.almacenTimeouts.map(t => {
             clearTimeout(t.id);  // Cancela el timeout actual
+            console.log(this.almacenTimeouts) 
             const currentTime = Date.now();
-            console.log("aqui")
-            console.log(t.remainingTime)
             t.remainingTime = t.remainingTime - (currentTime - t.startTime);  // Calcula el tiempo restante
-            console.log("despues")
-            console.log(t.remainingTime)
             return t
         });
+        console.log("pausar")
         console.log(this.almacenTimeouts)
     },
     reanudar: function() {
         this.pausa = false;
         this.almacenTimeouts.forEach(t => {
-
             const timeout = setTimeout(() => {
                 numeroPaquetes++
                 this.animacion(t.package,t.idpaquete, t.durpaquete);
@@ -508,8 +569,8 @@ AFRAME.registerComponent("envio-paquetes", {
             }, t.remainingTime);
             t.startTime = Date.now();
             t.id = timeout; // Actualizar el ID del timeout
-            
         });
+        console.log("reanudar")
         console.log(this.almacenTimeouts)
     }
 });
@@ -560,53 +621,54 @@ AFRAME.registerComponent("simulacro",{
     interval: null,
 
     init:function () {
-
         this.iniciarSimulacion(); 
-
     },
     iniciarSimulacion: function (){
-            // creo la entidad donde se localizará todo el escenario
-            const escenario = document.createElement("a-entity")
-            escenario.setAttribute("escenario","movimiento: false");
-            // añadimos la entidad que contiene todo el escenario al escenario de aframe
+            // creo la entidad donde se localizará todo el escenario y la agrego a la escena
             const scene = document.querySelector('a-scene');
+            const escenario = document.createElement("a-entity")
+            escenario.setAttribute("id", "escenario");
             scene.appendChild(escenario);
 
-            // Función que agrega controles para manejar el entorno
-            this.agregarControles();
-            // Función que crea el mapa descrito en el archivo Netgui.nkp
-            this.construirMapa(escenario);
-            // Función que mete los paquetes y lo envia entre nodos
-            this.crearpaquete(escenario);
-            this.crearhistorial(escenario);
+            this.agregarControles();        // Agrego controles para manejar el entorno
+            this.construirMapa(escenario);  // Dibuja la topología de la red
+            this.crearpaquete(escenario);   // Crea los paquetes
+            this.crearhistorial(escenario); // Crea el historial
+    },  
 
-
-    },
-
-
-
-
-    
     // Añado los controles (pausa y reprodución) que se quedaran fijos en la camara.
     agregarControles: function(){
         const camara = document.querySelector("#camara");
 
-        // Boton de pausa
+        // Boton de pausa/reanuda
         const botonpausaReproducir = document.createElement('a-entity');
         botonpausaReproducir.setAttribute('geometry', {primitive: "box", width:1, height: 1, depth:1 })
         botonpausaReproducir.object3D.position.set(-1, -2, -4)
         botonpausaReproducir.setAttribute("material", {src: "#pausa"});
         botonpausaReproducir.setAttribute("id", "Boton-Pausa-Reanudar")
-        camara.appendChild(botonpausaReproducir); // añado boton pausa
         botonpausaReproducir.setAttribute("pausa-reproducir","");
-
+        camara.appendChild(botonpausaReproducir); // añado boton pausa
         
+
+        // Boton reinicio
         const botonReinicio = document.createElement('a-entity');
         botonReinicio.setAttribute('geometry', {primitive: "box", width:1, height: 1, depth:1 })
         botonReinicio.object3D.position.set(1, -2, -4)
         botonReinicio.setAttribute("material", {src: "#reset"});
-        camara.appendChild(botonReinicio); // añado boton pausa
+        botonReinicio.setAttribute("id", "BotonReinicio")
         botonReinicio.setAttribute("reinicio","");
+        camara.appendChild(botonReinicio); // añado boton pausa
+        
+
+        // Boton sonido
+        const sonido = document.createElement('a-entity');
+        sonido.setAttribute('geometry', {primitive: "box", width:1, height: 1, depth:0.01 })
+        sonido.object3D.position.set(5, 2, -4)
+        sonido.setAttribute("material", {src: "#sonando"});
+        sonido.setAttribute("id", "BotonSonido")
+        sonido.setAttribute("sonido","");
+        camara.appendChild(sonido); // añado manejo sonido
+        
 
     },
 
@@ -616,58 +678,55 @@ AFRAME.registerComponent("simulacro",{
             .then(response => response.json())
             .then(json => {
             const nodes = json.nodes;
-            datosNetgui = json.nodes;
+
             // Crear entidades A-Frame
             nodes.forEach(node => {
-                const hub = "NKHub"
-                const router = "NKRouter"
-                const pc = "NKCompaq"
-                const switchs = "NKSwitch"
-                if (node.type.includes(pc)){
-                //if (node.type == "NKCompaq"){
-                    const entidad = document.createElement('a-entity');
+                const entidad = document.createElement('a-entity');
+                if (node.type.includes("NKCompaq")){
                     entidad.setAttribute('geometry', {primitive: "box", width:2, height: 2, depth:2 })
-                    //entidad.setAttribute('position', `${(node.position.x/20)-25} 0 ${((node.position.y/20)-25)} `);
                     entidad.object3D.position.set((node.position[0]), 0, (node.position[1]))
                     entidad.setAttribute("material", {src: "#pc", side: "double"});
                     entidad.setAttribute("id", node.name)
                     entidad.setAttribute('trazador', {forma: 'pc', intervalo: 1000});
-                    escenario.appendChild(entidad);
-                    crearNombreEnPlano (node.name,(node.position[0]),0,(node.position[1]))
                     entidad.setAttribute('paquetes-enviados', ''); // Añadir el componente paquetes-enviados
+                    entidad.setAttribute('nombre-en-plano', {nombre: node.name,x: node.position[0],y: 0,z: node.position[1]});
                     entidad.setAttribute('direcciones','');
-                } else if (node.type.includes(hub)){
+                    escenario.appendChild(entidad);
+                } else if (node.type.includes("NKHub")){
                     const entidad = document.createElement('a-entity');
                     entidad.setAttribute('geometry', {primitive: "box", width:1, height: 0.2})
                     entidad.object3D.position.set((node.position[0]), 0, (node.position[1]))
                     entidad.setAttribute("material", {src: "#hub", side: "double"});
                     entidad.setAttribute("id", node.name)
                     entidad.setAttribute('trazador', {forma: 'hub', intervalo: 1000});
-                    escenario.appendChild(entidad);
-                    crearNombreEnPlano (node.name,(node.position[0]),0,(node.position[1]))
+                    entidad.setAttribute('paquetes-enviados', ''); // Añadir el componente paquetes-enviados
+                    entidad.setAttribute('nombre-en-plano', {nombre: node.name,x: node.position[0],y: 0,z: node.position[1]});
                     entidad.setAttribute('direcciones','');
-                } else if (node.type.includes(router)){
+
+                    escenario.appendChild(entidad);
+                } else if (node.type.includes("NKRouter")){
                     const entidad = document.createElement('a-entity');
                     entidad.setAttribute('geometry', {primitive: "cylinder", radius:1, height: 0.5})
                     entidad.object3D.position.set((node.position[0]), 0, (node.position[1]))
                     entidad.setAttribute('material', { color: "#808080" });
                     entidad.setAttribute("id", node.name)
                     entidad.setAttribute('trazador', {forma: 'router', intervalo: 1000});
-                    escenario.appendChild(entidad);
-                    crearNombreEnPlano (node.name,(node.position[0]),0,(node.position[1]))
+                    entidad.setAttribute('paquetes-enviados', ''); // Añadir el componente paquetes-enviados
                     entidad.setAttribute('direcciones','');
-                }else if (node.type.include(switchs)) {
+                    entidad.setAttribute('nombre-en-plano', {nombre: node.name,x: node.position[0],y: 0,z: node.position[1]});
+                    escenario.appendChild(entidad);
+                }else if (node.type.include("NKSwitch")) {
                     const entidad = document.createElement('a-entity');
                     entidad.setAttribute('geometry', {primitive: "box", width:1, height: 0.4})
                     entidad.object3D.position.set((node.position[0]), 0, (node.position[1]))
                     entidad.setAttribute("material", {src: "#switch", side: "double"});
                     entidad.setAttribute("id", node.name)
                     entidad.setAttribute('trazador', {forma: 'switch', intervalo: 1000});
-                    escenario.appendChild(entidad);
-                    crearNombreEnPlano (node.name,(node.position[0]),0,(node.position[1]))
+                    entidad.setAttribute('paquetes-enviados', ''); // Añadir el componente paquetes-enviados
                     entidad.setAttribute('direcciones','');
+                    entidad.setAttribute('nombre-en-plano', {nombre: node.name,x: node.position[0],y: 0,z: node.position[1]});
+                    escenario.appendChild(entidad); 
                 }
-                escenario.setAttribute('escalarMapa', 'velocidad: 1');
             });
         
             const connections = json.connections;
@@ -675,7 +734,6 @@ AFRAME.registerComponent("simulacro",{
             connections.forEach(connection => {
                 const fromEntity = document.querySelector(`#${connection.from}`);
                 const toEntity = document.querySelector(`#${connection.to}`);
-    
                 if (fromEntity && toEntity) {
                     const line = document.createElement('a-entity');
                     line.setAttribute('line', {
@@ -685,6 +743,7 @@ AFRAME.registerComponent("simulacro",{
                     escenario.appendChild(line);
                 }
             });
+
             connections.forEach(connection => {
                 if (!conexionesPorNodo[connection.from]) {
                     conexionesPorNodo[connection.from] = [];
@@ -693,23 +752,21 @@ AFRAME.registerComponent("simulacro",{
                     conexionesPorNodo[connection.to] = [];
                 }
                 conexionesPorNodo[connection.from].push(connection.to);
-                conexionesPorNodo[connection.to].push(connection.from);
+                conexionesPorNodo[connection.to].push(connection.from); 
             });
         })
-        .catch(error => console.error('Error al leer el archivo:', error));
+        .catch(error => console.error("Error al leer el archivo:", error));
     },
     crearpaquete: function (escenario){
-        const entidad = document.createElement('a-entity');
-        entidad.setAttribute('envio-paquetes','');
+        const entidad = document.createElement("a-entity");
+        entidad.setAttribute("envio-paquetes","");
         entidad.setAttribute("id", "envio")
         escenario.appendChild(entidad);
     },
     crearhistorial: function (escenario){
         const historial = document.createElement("a-entity")
         historial.setAttribute('historial',{movimientoVertical: 0.05, tiempo: 50})
-        historial.setAttribute("id", "historieta")
+        historial.setAttribute("id", "EntidadHistorial")
         escenario.appendChild(historial);
     }
 });
-
-
